@@ -1,0 +1,366 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ClipboardTool from '../components/ClipboardTool.astro';
+import LanguagePicker from '../components/LanguagePicker.astro';
+
+const siteUrl = (import.meta.env.PUBLIC_SITE_URL || 'https://onlinecopypaste.com').replace(/\/$/, '');
+
+// Structured Data for SEO
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Online Copy Paste",
+      "url": siteUrl,
+      "description": "Online copy paste for transferring text between your phone, computer, and other devices with a temporary code.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is an online clipboard?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An online clipboard is a web-based tool that temporarily stores text so you can access it from a different device, acting as a bridge between your phone, tablet, and computer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I copy text from my PC to my phone?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Paste your text into the tool on your PC to generate a 6-digit code. Open this website on your phone, click 'Have a code from another device?', enter the code, and copy your text."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title="Online Copy Paste – Transfer Text Between Devices"
+  description="Use online copy paste to transfer text between your phone, computer, and other devices. Paste your text, get a code, and copy it on another device."
+  lang="en"
+>
+  <!-- Inject Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <!-- HEADER -->
+  <header class="max-w-5xl mx-auto px-6 py-6 flex justify-between items-center border-b border-slate-200 dark:border-slate-800">
+    <a href="#top" class="inline-flex items-center gap-3 font-bold text-xl tracking-tight text-slate-900 dark:text-white" aria-label="Online Copy Paste home">
+      <img src="/online-copy-paste-logo.svg" alt="" width="40" height="40" />
+      <span>Online Copy Paste</span>
+    </a>
+    <nav class="flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-300">
+      <a href="#how-it-works" class="hidden md:block hover:text-blue-600 dark:hover:text-blue-400 transition-colors">How It Works</a>
+      <a href="#features" class="hidden md:block hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Features</a>
+      <a href="#faq" class="hidden md:block hover:text-blue-600 dark:hover:text-blue-400 transition-colors">FAQ</a>
+      <LanguagePicker />
+      <button id="theme-toggle" type="button" aria-label="Toggle light and dark mode" title="Toggle light and dark mode" class="inline-flex items-center justify-center p-2 rounded-lg border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 transition-colors">
+        <!-- Sun Icon (shows in dark mode) -->
+        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+        </svg>
+        <!-- Moon Icon (shows in light mode) -->
+        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 py-12 md:py-16">
+    
+    <!-- HERO SECTION -->
+    <section class="text-center mb-10 rounded-3xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-100 via-white to-amber-50 dark:from-[#111318] dark:via-[#07090d] dark:to-[#17120b] px-4 py-6 md:px-6 md:py-8" id="top">
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight text-slate-900 dark:text-white">Online Copy Paste Between Devices</h1>
+      <p class="text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+        Transfer text from your phone to your computer, or from your computer to your phone using a simple code. No app or account required.
+      </p>
+
+      <!-- MAIN TOOL COMPONENT -->
+      <ClipboardTool />
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="mt-24 pt-12 border-t border-slate-200 dark:border-slate-800">
+      <h2 class="text-3xl font-bold text-center mb-12 text-slate-900 dark:text-white">How to Copy and Paste Between Devices</h2>
+      <div class="grid md:grid-cols-3 gap-8 text-center">
+        <div>
+          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6">1</div>
+          <h3 class="text-lg font-semibold mb-3 text-slate-900 dark:text-white">Paste</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Paste the text you want to transfer into the box above on your first device.</p>
+        </div>
+        <div>
+          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6">2</div>
+          <h3 class="text-lg font-semibold mb-3 text-slate-900 dark:text-white">Generate a Code</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Click Generate Code to create a temporary 6-digit retrieval code.</p>
+        </div>
+        <div>
+          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6">3</div>
+          <h3 class="text-lg font-semibold mb-3 text-slate-900 dark:text-white">Copy on Another Device</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Open the website on your other device, click "Enter a Code", retrieve your text, and copy it.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="mt-24">
+      <h2 class="text-3xl font-bold text-center mb-12 text-slate-900 dark:text-white">Why Use Online Copy Paste?</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+          <h3 class="text-lg font-semibold mb-2 text-slate-900 dark:text-white">No Account Required</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm">Transfer text instantly without the friction of signing up, verifying an email, or remembering a password.</p>
+        </div>
+        <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+          <h3 class="text-lg font-semibold mb-2 text-slate-900 dark:text-white">Works Across Devices</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm">Whether you are on a smartphone, tablet, laptop, or desktop computer, if it has a web browser, it works.</p>
+        </div>
+        <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+          <h3 class="text-lg font-semibold mb-2 text-slate-900 dark:text-white">Simple Code-Based Transfer</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm">No need to pair devices via Bluetooth or be on the same Wi-Fi network. Just use the short 6-digit code.</p>
+        </div>
+        <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+          <h3 class="text-lg font-semibold mb-2 text-slate-900 dark:text-white">No App Installation</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm">Everything works directly in your browser. Save your storage space and avoid unnecessary app permissions.</p>
+        </div>
+        <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+          <h3 class="text-lg font-semibold mb-2 text-slate-900 dark:text-white">Fast Text Transfer</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm">The workflow is optimized for speed: paste, click generate, type the code on your other screen, and copy.</p>
+        </div>
+        <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+          <h3 class="text-lg font-semibold mb-2 text-slate-900 dark:text-white">Temporary Transfers</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm">Clipboard entries are designed strictly for temporary transfers. Codes automatically expire after 10 minutes.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEO CONTENT / USE CASES -->
+    <section class="mt-24 max-w-3xl mx-auto prose prose-slate dark:prose-invert prose-lg">
+      <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-6 text-center">Transfer Text Between Devices Easily</h2>
+      
+      <p>We've all been there: you have a long, complicated URL on your laptop, and you urgently need to open it on your phone. Or maybe someone texted you an address, and you want to type it into a document on your computer. Online Copy Paste gives you a quick way to <strong>copy and paste between devices</strong> using only a browser.</p>
+      
+      <p>Usually, this looks like emailing a note to yourself, opening a messaging app just to send a message to a "Saved Messages" folder, or downloading a dedicated ecosystem app. Not only do these methods clutter your inbox and chat history, but they also often require you to be logged into the same account on both screens.</p>
+      
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-5">What Is an Online Copy Paste Tool?</h2>
+      <p>An online copy paste tool is a temporary, browser-based clipboard for moving text between separate devices. Unlike the normal clipboard on a single computer or phone, an <strong>online copy paste clipboard</strong> lets one device create a transfer and another device retrieve it. That makes it useful for <strong>text transfer between devices</strong> when the devices use different operating systems or are not signed in to the same service.</p>
+
+      <h3 class="text-xl font-semibold mt-8 mb-4">A Simple Online Clipboard</h3>
+      <p>Online Copy Paste was built to solve this specific annoyance. It acts as an <strong>online clipboard</strong> that lets you <strong>share text between devices</strong> with a short code. Paste your note, link, address, message, or small code snippet into the tool, generate a code, then enter that code on the other device. The retrieved text is ready to copy.</p>
+      
+      <ul class="list-disc pl-6 mb-6 space-y-2">
+        <li><strong>Copy text from PC to phone:</strong> Send a quick URL, a restaurant address, or an important serial number from your desktop screen straight to your mobile browser.</li>
+        <li><strong>Copy text from phone to PC:</strong> Have a long text message or a note on your phone that you want to edit on a real keyboard? Transfer it over in seconds.</li>
+        <li><strong>Share temporary information:</strong> Move notes, links, code snippets, or draft text without leaving a message in your chat history.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-5">Transfer Text Using a Code</h2>
+      <p>The code-based workflow is designed for a one-time device-to-device text transfer:</p>
+      <ol class="list-decimal pl-6 mb-6 space-y-2">
+        <li>Paste text into the online clipboard on the first device.</li>
+        <li>Generate a temporary six-digit code.</li>
+        <li>Open Online Copy Paste in a browser on the other device.</li>
+        <li>Enter the code to retrieve the text.</li>
+        <li>Copy the result wherever you need it.</li>
+      </ol>
+
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-5">Transfer Text Without an App</h2>
+      <p>You can <strong>transfer text without an app</strong> and <strong>transfer text without login</strong>. There is no software to install, account to create, email to send, or synchronization service to configure. Whether you need to <strong>transfer text from computer to phone</strong>, from a tablet to a laptop, or between a Mac and an Android device, the workflow is the same: use a browser and a six-digit code.</p>
+
+      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-5">What Can You Transfer?</h2>
+      <p>This free text transfer tool is intended for short-lived text. Use it to transfer notes between devices, copy links between devices, share a URL, move an address, send a message draft, or transfer a small code snippet. Text can be up to 20,000 characters, and line breaks are preserved. Entries expire after 10 minutes or are deleted after one retrieval, so save anything you need for longer.</p>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="mt-24 max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-10 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+      
+      <div class="space-y-4">
+        <details class="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center font-semibold cursor-pointer list-none text-slate-900 dark:text-white">
+            What is an online clipboard?
+            <span class="transition group-open:rotate-180">
+              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">An online clipboard is a web-based tool that temporarily stores text so you can access it from a different device. It acts as a bridge, allowing you to copy something on your phone and paste it on your computer, or vice versa.</p>
+        </details>
+
+        <details class="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center font-semibold cursor-pointer list-none text-slate-900 dark:text-white">
+            How do I copy text from my PC to my phone?
+            <span class="transition group-open:rotate-180">
+              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">Simply paste your text into the box on this website using your PC and click "Generate Code". Then, open this same website on your phone, click "Have a code from another device?", enter the 6-digit code, and your text will appear ready to copy.</p>
+        </details>
+
+        <details class="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center font-semibold cursor-pointer list-none text-slate-900 dark:text-white">
+            Can I transfer text from my phone to my computer?
+            <span class="transition group-open:rotate-180">
+              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">Yes! The process works exactly the same in reverse. Generate the code on your phone, and enter that code on your computer to retrieve the text.</p>
+        </details>
+
+        <details class="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center font-semibold cursor-pointer list-none text-slate-900 dark:text-white">
+            Do I need an account or an app?
+            <span class="transition group-open:rotate-180">
+              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">No. You do not need to create an account, log in, provide an email address, or install any mobile apps. Everything runs entirely within your standard web browser.</p>
+        </details>
+
+        <details class="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center font-semibold cursor-pointer list-none text-slate-900 dark:text-white">
+            How does the transfer code work?
+            <span class="transition group-open:rotate-180">
+              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">When you paste text, the tool stores it temporarily and generates a random 6-digit code. When you enter that code on another device, the server locates the matching text, delivers it to you, and then deletes it.</p>
+        </details>
+
+        <details class="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center font-semibold cursor-pointer list-none text-slate-900 dark:text-white">
+            How long does a code last?
+            <span class="transition group-open:rotate-180">
+              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">Codes are strictly temporary and expire automatically 10 minutes after they are generated. Once a code expires, the text is permanently inaccessible. Furthermore, if you retrieve the text, the record is immediately deleted (one-time retrieval).</p>
+        </details>
+
+        <details class="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center font-semibold cursor-pointer list-none text-slate-900 dark:text-white">
+            Can I transfer links, URLs, and code snippets?
+            <span class="transition group-open:rotate-180">
+              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">Yes, you can paste any text up to 20,000 characters. This includes website URLs, paragraphs of text, lists, street addresses, or programming code snippets. Formatting (like line breaks) is preserved.</p>
+        </details>
+
+        <details class="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex justify-between items-center font-semibold cursor-pointer list-none text-slate-900 dark:text-white">
+            Does it work between Windows, Mac, Android, and iPhone?
+            <span class="transition group-open:rotate-180">
+              <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">Absolutely. Because the tool runs in the web browser, it is completely independent of your operating system. It works seamlessly across iOS, Android, Windows, macOS, and Linux.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="mt-32 mb-16 text-center">
+      <div class="bg-blue-600 rounded-3xl p-10 md:p-16 max-w-4xl mx-auto shadow-2xl">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Need to move text to another device?</h2>
+        <p class="text-blue-100 mb-8 text-lg">Paste it here, get a code, and copy it on your other device in seconds.</p>
+        <a href="#top" class="inline-block bg-white text-blue-600 hover:bg-slate-100 font-bold py-4 px-8 rounded-xl transition-colors shadow-lg">
+          Start Transferring Text
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 mt-20">
+    <div class="max-w-5xl mx-auto px-6 py-12">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
+        <div>
+          <div class="inline-flex items-center gap-3 font-bold text-xl tracking-tight text-slate-900 dark:text-white mb-2">
+            <img src="/online-copy-paste-logo.svg" alt="" width="40" height="40" />
+            <span>Online Copy Paste</span>
+          </div>
+          <p class="text-slate-500 dark:text-slate-400 text-sm">A simple way to transfer text between your devices.</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-6 text-sm font-medium text-slate-500 dark:text-slate-400">
+          <a href="#top" class="hover:text-blue-600 dark:hover:text-blue-400">Home</a>
+          <a href="#how-it-works" class="hover:text-blue-600 dark:hover:text-blue-400">How It Works</a>
+          <a href="#faq" class="hover:text-blue-600 dark:hover:text-blue-400">FAQ</a>
+          <a href="/privacy" class="hover:text-blue-600 dark:hover:text-blue-400">Privacy Policy</a>
+          <a href="/terms" class="hover:text-blue-600 dark:hover:text-blue-400">Terms of Service</a>
+        </div>
+      </div>
+      <div class="mt-8 text-center text-slate-400 dark:text-slate-500 text-xs">
+        &copy; {new Date().getFullYear()} Online Copy Paste. All rights reserved.
+      </div>
+      <LanguagePicker />
+    </div>
+  </footer>
+</Layout>
+
+<script is:inline>
+  const initializeTheme = () => {
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+    if (!themeToggleBtn || !darkIcon || !lightIcon) return;
+
+    // 1. Check current theme on load to show correct icon
+    const currentTheme = localStorage.getItem('theme') || 
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+    if (currentTheme === 'dark') {
+      lightIcon.classList.remove('hidden');
+      darkIcon.classList.add('hidden');
+      document.documentElement.classList.add('dark');
+    } else {
+      darkIcon.classList.remove('hidden');
+      lightIcon.classList.add('hidden');
+      document.documentElement.classList.remove('dark');
+    }
+
+    // 2. Listen for button clicks
+    themeToggleBtn.addEventListener('click', function() {
+      const isDark = document.documentElement.classList.contains('dark');
+      
+      if (isDark) {
+        // Switch to Light Mode
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+        darkIcon.classList.remove('hidden');
+        lightIcon.classList.add('hidden');
+      } else {
+        // Switch to Dark Mode
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        lightIcon.classList.remove('hidden');
+        darkIcon.classList.add('hidden');
+      }
+    });
+
+    // 3. Smooth scrolling for links (keeps your start button working)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if(targetId === '#') return;
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeTheme, { once: true });
+  } else {
+    initializeTheme();
+  }
+</script>

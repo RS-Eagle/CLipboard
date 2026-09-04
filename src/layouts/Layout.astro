@@ -1,0 +1,64 @@
+---
+import '../styles/global.css';
+interface Props {
+  title: string;
+  description: string;
+  lang?: string;
+}
+const { title, description, lang = 'en' } = Astro.props;
+const siteUrl = (import.meta.env.PUBLIC_SITE_URL || 'https://onlinecopypaste.com').replace(/\/$/, '');
+const canonicalUrl = `${siteUrl}${Astro.url.pathname === '/' ? '/' : Astro.url.pathname}`;
+const ogImageUrl = `${siteUrl}/og-image.svg`;
+const languages = ['en', 'es', 'ja', 'fr', 'de', 'pt', 'ko', 'it'];
+const languageUrl = (locale: string) => locale === 'en' ? `${siteUrl}/` : `${siteUrl}/${locale}/`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+    {languages.map((locale) => <link rel="alternate" hreflang={locale} href={languageUrl(locale)} />)}
+    <link rel="alternate" hreflang="x-default" href={languageUrl('en')} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content="Online Copy Paste" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Online Copy Paste" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+      if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+  </head>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#07090d] dark:text-slate-100 transition-colors duration-300">
+    <slot />
+  </body>
+</html>

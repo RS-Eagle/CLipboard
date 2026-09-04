@@ -1,0 +1,21 @@
+---
+const languages = [
+  ['en', 'English', '/'],
+  ['es', 'Español', '/es/'],
+  ['ja', '日本語', '/ja/'],
+  ['fr', 'Français', '/fr/'],
+  ['de', 'Deutsch', '/de/'],
+  ['pt', 'Português', '/pt/'],
+  ['ko', '한국어', '/ko/'],
+  ['it', 'Italiano', '/it/']
+];
+---
+
+<details class="relative inline-block text-left">
+  <summary class="cursor-pointer list-none rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition-colors hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700">
+    Language
+  </summary>
+  <nav aria-label="Language selection" class="absolute right-0 z-10 mt-2 min-w-36 rounded-xl border border-slate-200 bg-white p-2 text-sm shadow-xl dark:border-slate-700 dark:bg-slate-800">
+    {languages.map(([code, label, href]) => <a href={href} lang={code} class="block rounded-lg px-3 py-2 text-slate-700 hover:bg-amber-50 hover:text-amber-700 dark:text-slate-200 dark:hover:bg-amber-950/40 dark:hover:text-amber-300">{label}</a>)}
+  </nav>
+</details>

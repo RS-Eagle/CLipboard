@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --app-bg: #f8fafc;
+  --app-text: #0f172a;
+}
+.dark {
+  --app-bg: #07090d;
+  --app-text: #f8fafc;
+}
+
+html.dark body {
+  background-color: var(--app-bg);
+  color: var(--app-text);
+}
+
+.dark .dark\:bg-slate-800 {
+  background-color: #111318;
+}
+
+.dark .dark\:bg-slate-900 {
+  background-color: #07090d;
+}
+
+.hidden-state {
+  display: none !important;
+}

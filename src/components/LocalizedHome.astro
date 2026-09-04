@@ -1,0 +1,185 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ClipboardTool from './ClipboardTool.astro';
+import LanguagePicker from './LanguagePicker.astro';
+
+export type SupportedLanguage = 'es' | 'ja' | 'fr' | 'de' | 'pt' | 'ko' | 'it';
+
+const content: Record<SupportedLanguage, {
+  title: string;
+  description: string;
+  heading: string;
+  intro: string;
+  how: string;
+  steps: [string, string, string];
+  features: string;
+  featureItems: [string, string, string];
+  about: string;
+  aboutText: string;
+  faq: string;
+  questions: [string, string][];
+}> = {
+  es: {
+    title: 'Copiar y pegar online | Transferir texto entre dispositivos',
+    description: 'Copia y pega online para transferir texto entre tu teléfono y ordenador con un código temporal.',
+    heading: 'Copiar y pegar online entre dispositivos',
+    intro: 'Transfiere texto entre tu teléfono, ordenador y otros dispositivos usando solo un navegador y un código.',
+    how: 'Cómo copiar y pegar entre dispositivos',
+    steps: ['Pega tu texto', 'Genera un código temporal de seis dígitos', 'Introduce el código y copia el texto en el otro dispositivo'],
+    features: 'Portapapeles online sencillo',
+    featureItems: ['Sin aplicación ni cuenta', 'Funciona entre PC, móvil y tableta', 'Los códigos caducan después de 10 minutos'],
+    about: 'Transferir texto online sin complicaciones',
+    aboutText: 'Este portapapeles online te permite copiar texto del PC al teléfono o del teléfono al PC. Comparte notas, enlaces, direcciones, mensajes y pequeños fragmentos de código sin enviarte un correo ni instalar otra aplicación. Pega el contenido, genera un código, abre el sitio en el segundo dispositivo y recupera el texto para copiarlo.',
+    faq: 'Preguntas frecuentes',
+    questions: [['¿Qué es copiar y pegar online?', 'Es una herramienta web que almacena texto temporalmente para transferirlo entre dispositivos separados.'], ['¿Puedo transferir texto sin instalar una aplicación?', 'Sí. Solo necesitas un navegador; no necesitas instalar una aplicación ni crear una cuenta.'], ['¿Puedo copiar texto del PC al teléfono?', 'Sí. Pega el texto en el PC, genera un código de seis dígitos e introdúcelo en el teléfono.']]
+  },
+  ja: {
+    title: 'オンラインコピー＆ペースト｜デバイス間でテキストを転送',
+    description: 'オンラインコピー＆ペーストで、スマートフォンとパソコンの間でテキストを一時コードで転送できます。',
+    heading: 'デバイス間でオンラインコピー＆ペースト',
+    intro: 'ブラウザとコードだけで、スマートフォン、パソコン、タブレットの間でテキストを転送できます。',
+    how: 'デバイス間でコピー＆ペーストする方法',
+    steps: ['テキストを貼り付ける', '6桁の一時コードを生成する', '別のデバイスでコードを入力してコピーする'],
+    features: 'シンプルなオンラインクリップボード',
+    featureItems: ['アプリやアカウント不要', 'PC、スマートフォン、タブレットで利用可能', 'コードは10分後に期限切れ'],
+    about: '簡単にテキストをオンライン転送',
+    aboutText: 'このオンラインクリップボードなら、PCからスマートフォンへ、またはスマートフォンからPCへテキストをコピーできます。メモ、リンク、住所、メッセージ、短いコードを、メールやアプリなしで共有できます。テキストを貼り付け、コードを作成し、別のデバイスで入力してコピーしてください。',
+    faq: 'よくある質問',
+    questions: [['オンラインコピー＆ペーストとは？', '別々のデバイス間でテキストを転送するために、一時的にテキストを保存するウェブツールです。'], ['アプリなしでテキストを転送できますか？', 'はい。ブラウザだけで利用でき、アプリのインストールやアカウント作成は不要です。'], ['PCからスマートフォンにコピーできますか？', 'はい。PCでテキストを貼り付けてコードを生成し、スマートフォンでそのコードを入力します。']]
+  },
+  fr: {
+    title: 'Copier-coller en ligne – Transférer du texte entre appareils',
+    description: 'Utilisez le copier-coller en ligne pour transférer du texte entre votre téléphone et votre ordinateur avec un code temporaire.',
+    heading: 'Copier-coller en ligne entre appareils',
+    intro: 'Transférez du texte entre téléphone, ordinateur et tablette avec un navigateur et un code.',
+    how: 'Comment copier-coller entre appareils',
+    steps: ['Collez votre texte', 'Générez un code temporaire à six chiffres', 'Saisissez le code sur l’autre appareil et copiez le texte'],
+    features: 'Presse-papiers en ligne simple',
+    featureItems: ['Sans application ni compte', 'Compatible PC, mobile et tablette', 'Les codes expirent après 10 minutes'],
+    about: 'Transférer du texte en ligne facilement',
+    aboutText: 'Ce presse-papiers en ligne vous permet de copier du texte du PC vers le téléphone ou du téléphone vers le PC. Partagez des notes, liens, adresses, messages et petits extraits de code sans vous envoyer un e-mail ni installer une application. Collez le contenu, créez un code et récupérez-le sur votre autre appareil.',
+    faq: 'Questions fréquentes',
+    questions: [['Qu’est-ce que le copier-coller en ligne ?', 'C’est un outil web qui stocke temporairement du texte pour le transférer entre plusieurs appareils.'], ['Puis-je transférer du texte sans installer d’application ?', 'Oui. Un navigateur suffit, sans application ni compte.'], ['Puis-je copier du PC vers le téléphone ?', 'Oui. Collez le texte sur le PC, générez un code à six chiffres et saisissez-le sur le téléphone.']]
+  },
+  de: {
+    title: 'Online kopieren und einfügen – Text zwischen Geräten übertragen',
+    description: 'Übertragen Sie Text mit Online-Kopieren und Einfügen per temporärem Code zwischen Smartphone und Computer.',
+    heading: 'Online kopieren und einfügen zwischen Geräten',
+    intro: 'Übertragen Sie Text zwischen Smartphone, Computer und Tablet mit einem Browser und einem Code.',
+    how: 'So kopieren und fügen Sie zwischen Geräten ein',
+    steps: ['Text einfügen', 'Einen temporären sechsstelligen Code erstellen', 'Code auf dem anderen Gerät eingeben und Text kopieren'],
+    features: 'Einfaches Online-Zwischenablage',
+    featureItems: ['Keine App und kein Konto', 'Für PC, Smartphone und Tablet', 'Codes laufen nach 10 Minuten ab'],
+    about: 'Text einfach online übertragen',
+    aboutText: 'Diese Online-Zwischenablage überträgt Text vom PC zum Smartphone oder vom Smartphone zum PC. Teilen Sie Notizen, Links, Adressen, Nachrichten und kurze Codeausschnitte, ohne eine E-Mail an sich selbst zu senden oder eine App zu installieren. Text einfügen, Code erstellen, auf dem zweiten Gerät öffnen und kopieren.',
+    faq: 'Häufig gestellte Fragen',
+    questions: [['Was ist Online-Kopieren und Einfügen?', 'Ein Webtool, das Text vorübergehend speichert, damit er zwischen Geräten übertragen werden kann.'], ['Kann ich Text ohne App übertragen?', 'Ja. Sie benötigen nur einen Browser, keine App und kein Konto.'], ['Kann ich Text vom PC zum Smartphone kopieren?', 'Ja. Text am PC einfügen, Code erstellen und den Code am Smartphone eingeben.']]
+  },
+  pt: {
+    title: 'Copiar e colar online – Transferir texto entre dispositivos',
+    description: 'Use copiar e colar online para transferir texto entre o telefone e o computador com um código temporário.',
+    heading: 'Copiar e colar online entre dispositivos',
+    intro: 'Transfira texto entre telefone, computador e tablet usando apenas um navegador e um código.',
+    how: 'Como copiar e colar entre dispositivos',
+    steps: ['Cole o texto', 'Gere um código temporário de seis dígitos', 'Insira o código no outro dispositivo e copie o texto'],
+    features: 'Área de transferência online simples',
+    featureItems: ['Sem aplicativo ou conta', 'Funciona em PC, celular e tablet', 'Os códigos expiram após 10 minutos'],
+    about: 'Transfira texto online com facilidade',
+    aboutText: 'Esta área de transferência online permite copiar texto do PC para o celular ou do celular para o PC. Compartilhe notas, links, endereços, mensagens e pequenos trechos de código sem enviar um e-mail para si mesmo ou instalar um aplicativo. Cole o conteúdo, gere um código e recupere-o no outro dispositivo.',
+    faq: 'Perguntas frequentes',
+    questions: [['O que é copiar e colar online?', 'É uma ferramenta web que armazena texto temporariamente para transferi-lo entre dispositivos.'], ['Posso transferir texto sem instalar um aplicativo?', 'Sim. Basta usar um navegador; não é necessário aplicativo ou conta.'], ['Posso copiar texto do PC para o celular?', 'Sim. Cole o texto no PC, gere um código de seis dígitos e insira-o no celular.']]
+  },
+  ko: {
+    title: '온라인 복사 붙여넣기 | 기기 간 텍스트 전송',
+    description: '온라인 복사 붙여넣기로 임시 코드를 사용해 휴대폰과 컴퓨터 사이에 텍스트를 전송하세요.',
+    heading: '기기 간 온라인 복사 붙여넣기',
+    intro: '브라우저와 코드만으로 휴대폰, 컴퓨터, 태블릿 사이에 텍스트를 전송할 수 있습니다.',
+    how: '기기 간 복사하고 붙여넣는 방법',
+    steps: ['텍스트 붙여넣기', '6자리 임시 코드 생성하기', '다른 기기에서 코드를 입력하고 텍스트 복사하기'],
+    features: '간단한 온라인 클립보드',
+    featureItems: ['앱과 계정이 필요 없음', 'PC, 모바일, 태블릿에서 사용 가능', '코드는 10분 후 만료'],
+    about: '간편한 온라인 텍스트 전송',
+    aboutText: '이 온라인 클립보드를 사용하면 PC에서 휴대폰으로, 또는 휴대폰에서 PC로 텍스트를 복사할 수 있습니다. 메모, 링크, 주소, 메시지, 짧은 코드 조각을 이메일이나 앱 없이 공유하세요. 텍스트를 붙여넣고 코드를 생성한 뒤 다른 기기에서 입력하면 됩니다.',
+    faq: '자주 묻는 질문',
+    questions: [['온라인 복사 붙여넣기란 무엇인가요?', '서로 다른 기기 사이에서 텍스트를 전송하도록 텍스트를 임시 저장하는 웹 도구입니다.'], ['앱 없이 텍스트를 전송할 수 있나요?', '네. 브라우저만 있으면 되며 앱 설치나 계정 생성이 필요하지 않습니다.'], ['PC에서 휴대폰으로 텍스트를 복사할 수 있나요?', '네. PC에서 텍스트를 붙여넣고 코드를 생성한 후 휴대폰에서 코드를 입력하세요.']]
+  },
+  it: {
+    title: 'Copia e incolla online – Trasferisci testo tra dispositivi',
+    description: 'Usa copia e incolla online per trasferire testo tra telefono e computer con un codice temporaneo.',
+    heading: 'Copia e incolla online tra dispositivi',
+    intro: 'Trasferisci testo tra telefono, computer e tablet usando solo un browser e un codice.',
+    how: 'Come copiare e incollare tra dispositivi',
+    steps: ['Incolla il testo', 'Genera un codice temporaneo di sei cifre', 'Inserisci il codice sull’altro dispositivo e copia il testo'],
+    features: 'Clipboard online semplice',
+    featureItems: ['Nessuna app o account', 'Funziona su PC, smartphone e tablet', 'I codici scadono dopo 10 minuti'],
+    about: 'Trasferisci testo online in modo semplice',
+    aboutText: 'Questa clipboard online ti permette di copiare testo dal PC al telefono o dal telefono al PC. Condividi note, link, indirizzi, messaggi e brevi frammenti di codice senza inviarti un’e-mail o installare un’app. Incolla il contenuto, genera un codice e recuperalo sull’altro dispositivo.',
+    faq: 'Domande frequenti',
+    questions: [['Che cos’è copia e incolla online?', 'È uno strumento web che conserva temporaneamente il testo per trasferirlo tra dispositivi diversi.'], ['Posso trasferire testo senza installare un’app?', 'Sì. Basta un browser, senza app o account.'], ['Posso copiare testo dal PC al telefono?', 'Sì. Incolla il testo sul PC, genera un codice di sei cifre e inseriscilo sul telefono.']]
+  }
+};
+
+const { lang } = Astro.props as { lang: SupportedLanguage };
+const page = content[lang];
+---
+
+<Layout title={page.title} description={page.description} lang={lang}>
+  <header class="max-w-5xl mx-auto px-6 py-6 flex justify-between items-center border-b border-slate-200 dark:border-slate-800">
+    <a href={`/${lang}/`} class="inline-flex items-center gap-3 font-bold text-xl tracking-tight text-slate-900 dark:text-white" aria-label="Online Copy Paste">
+      <img src="/online-copy-paste-logo.svg" alt="" width="40" height="40" />
+      <span>Online Copy Paste</span>
+    </a>
+    <nav class="flex items-center gap-4 md:gap-8 text-sm font-medium text-slate-600 dark:text-slate-300">
+      <a href="#how-it-works" class="hidden md:block hover:text-amber-600 dark:hover:text-amber-400 transition-colors">How It Works</a>
+      <a href="#features" class="hidden md:block hover:text-amber-600 dark:hover:text-amber-400 transition-colors">Features</a>
+      <a href="#faq" class="hidden md:block hover:text-amber-600 dark:hover:text-amber-400 transition-colors">FAQ</a>
+      <LanguagePicker />
+      <button id="localized-theme-toggle" type="button" aria-label="Toggle light and dark mode" title="Toggle light and dark mode" class="inline-flex items-center justify-center p-2 rounded-lg border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 transition-colors">
+        <span aria-hidden="true">◐</span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 py-8 md:py-12">
+    <section class="text-center rounded-3xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-100 via-white to-amber-50 dark:from-[#111318] dark:via-[#07090d] dark:to-[#17120b] px-4 py-6 md:px-6 md:py-8" id="top">
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-3 tracking-tight text-slate-900 dark:text-white">{page.heading}</h1>
+      <p class="text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">{page.intro}</p>
+      <ClipboardTool />
+    </section>
+
+    <section id="how-it-works" class="mt-16 pt-10 border-t border-slate-200 dark:border-slate-800">
+      <h2 class="text-3xl font-bold text-center mb-10 text-slate-900 dark:text-white">{page.how}</h2>
+      <div class="grid md:grid-cols-3 gap-8 text-center">
+        {page.steps.map((step, index) => <div><div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-5">{index + 1}</div><p class="text-slate-700 dark:text-slate-300 leading-relaxed">{step}</p></div>)}
+      </div>
+    </section>
+
+    <section id="features" class="mt-16">
+      <h2 class="text-3xl font-bold text-center mb-10 text-slate-900 dark:text-white">{page.features}</h2>
+      <div class="grid md:grid-cols-3 gap-6">{page.featureItems.map((item) => <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 text-center text-slate-700 dark:text-slate-300">{item}</div>)}</div>
+    </section>
+
+    <section class="mt-16 max-w-3xl mx-auto prose prose-slate dark:prose-invert prose-lg">
+      <h2 class="text-3xl font-bold text-slate-900 dark:text-white">{page.about}</h2>
+      <p>{page.aboutText}</p>
+    </section>
+
+    <section id="faq" class="mt-16 max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-10 text-slate-900 dark:text-white">{page.faq}</h2>
+      <div class="space-y-4">{page.questions.map(([question, answer]) => <details class="group bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6"><summary class="font-semibold cursor-pointer list-none text-slate-900 dark:text-white">{question}</summary><p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">{answer}</p></details>)}</div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 mt-16 px-6 py-10 text-center">
+    <p class="text-slate-500 dark:text-slate-400 text-sm">Online Copy Paste</p>
+    <LanguagePicker />
+  </footer>
+</Layout>
+
+<script is:inline>
+  const themeToggle = document.getElementById('localized-theme-toggle');
+  themeToggle?.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  });
+</script>
