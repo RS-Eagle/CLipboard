@@ -1,0 +1,24 @@
+{
+  "name": "online-copy-paste",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-09-04",
+  "compatibility_flags": ["nodejs_compat"],
+  "routes": [
+    {
+      "pattern": "onlinecopypaste.com",
+      "custom_domain": true
+    }
+  ],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  },
+  "vars": {
+    "PUBLIC_SITE_URL": "https://onlinecopypaste.com",
+    "PUBLIC_SUPABASE_URL": "https://kyzdjurxksqmyyeccbad.supabase.co"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

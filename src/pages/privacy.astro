@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Privacy Policy – Online Copy Paste"
+  description="Learn how Online Copy Paste handles text transfers, temporary clipboard entries, technical data, and privacy requests."
+>
+  <main class="max-w-3xl mx-auto px-6 py-12 md:py-16">
+    <a href="/" class="text-sm font-semibold text-amber-700 hover:text-amber-800 dark:text-amber-300 dark:hover:text-amber-200">&larr; Back to Online Copy Paste</a>
+    <article class="mt-8 prose prose-slate dark:prose-invert prose-lg">
+      <h1>Privacy Policy</h1>
+      <p><strong>Effective date:</strong> September 4, 2026</p>
+      <p>Online Copy Paste is a browser-based service for moving text between devices. This policy explains what happens when you use the website at <strong>onlinecopypaste.com</strong>, including the text you submit to create a transfer code.</p>
+
+      <h2>What We Collect</h2>
+      <p>When you create a transfer, we receive and temporarily store the text you submit, together with a randomly generated six-digit code and an expiration time. The service does not require an account, password, email address, or profile.</p>
+      <p>We may also receive ordinary technical information needed to deliver a web service, such as your IP address, browser type, device information, request timestamps, and error details. This information may be processed by our hosting, infrastructure, and security providers according to their own policies.</p>
+
+      <h2>How Temporary Transfers Work</h2>
+      <ol>
+        <li>You paste text into the form and choose <strong>Generate Code</strong>.</li>
+        <li>The text is sent to the service and associated with a six-digit code.</li>
+        <li>You enter that code on another device to retrieve the text.</li>
+        <li>After a successful retrieval, the transfer record is deleted. Unretrieved records expire after 10 minutes.</li>
+      </ol>
+      <p>Online Copy Paste is designed for short-lived text transfers, not permanent storage. Do not submit passwords, payment details, private keys, health information, or other sensitive information that you would not want temporarily processed by an online service.</p>
+
+      <h2>Why We Use Information</h2>
+      <ul>
+        <li>To create, retrieve, expire, and delete temporary clipboard transfers.</li>
+        <li>To operate, maintain, troubleshoot, and protect the website and API.</li>
+        <li>To respond to support, privacy, abuse, or legal requests.</li>
+        <li>To comply with applicable law and enforce our Terms of Service.</li>
+      </ul>
+      <p>We do not use your submitted text to create a public page, advertising profile, or user account. We do not sell submitted text.</p>
+
+      <h2>Service Providers</h2>
+      <p>The application uses Supabase to process the temporary clipboard records and Cloudflare to host and deliver the website and server application. These providers may process technical information necessary to provide their infrastructure. We configure the application so its database service credentials remain on the server and are not sent to your browser.</p>
+
+      <h2>Cookies and Advertising</h2>
+      <p>The site uses browser storage to remember your light or dark theme preference. The core clipboard workflow does not require an account cookie.</p>
+      <p>If advertising, analytics, or consent-management services are added, those services may use cookies or similar technologies subject to their own notices and any consent choices required in your region. This policy will be updated when those services materially change the information collected.</p>
+
+      <h2>Your Choices and Requests</h2>
+      <p>Because transfer records are automatically deleted after retrieval or expiry, there is usually no persistent text record for us to export or correct. You may contact us to ask about personal information processed in connection with the service, request correction or deletion where applicable, or raise a privacy concern.</p>
+      <p>Send privacy questions to <a href="mailto:contact@onlinecopypaste.com">contact@onlinecopypaste.com</a>. We may need enough information to verify and understand a request, but we will not ask you to send passwords or secret keys by email.</p>
+
+      <h2>Children</h2>
+      <p>Online Copy Paste is not directed at children under the minimum age required by applicable law. Please do not use the service or submit information on behalf of a child without appropriate permission.</p>
+
+      <h2>Changes to This Policy</h2>
+      <p>We may update this policy when the service, legal requirements, or data practices change. The effective date at the top will identify the current version. Continued use after an update means the revised policy applies to future use of the service.</p>
+
+      <h2>Contact</h2>
+      <p>For privacy questions or complaints, contact <a href="mailto:contact@onlinecopypaste.com">contact@onlinecopypaste.com</a>.</p>
+    </article>
+  </main>
+</Layout>

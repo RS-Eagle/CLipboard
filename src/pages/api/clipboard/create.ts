@@ -1,10 +1,10 @@
 import type { APIRoute } from 'astro';
 import { supabaseAdmin } from '../../../lib/supabase';
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const { content } = await request.json();
+    const { content } = await request.json() as { content?: unknown };
 
     if (!content || typeof content !== 'string') {
       return new Response(JSON.stringify({ error: 'Content is required.' }), { status: 400 });

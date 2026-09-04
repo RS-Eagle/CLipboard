@@ -3,7 +3,7 @@ import { supabaseAdmin } from '../../../lib/supabase';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const { code } = await request.json();
+    const { code } = await request.json() as { code?: unknown };
 
     if (!code || typeof code !== 'string' || !/^\d{6}$/.test(code)) {
       return new Response(JSON.stringify({ error: 'Invalid 6-digit code.' }), { status: 400 });

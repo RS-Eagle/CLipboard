@@ -1,5 +1,5 @@
 import { defineConfig } from 'astro/config';
-import node from '@astrojs/node';
+import cloudflare from '@astrojs/cloudflare';
 
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
@@ -15,9 +15,8 @@ export default defineConfig({
     }
   },
 
-  adapter: node({
-    mode: 'standalone'
-  }),
+  adapter: cloudflare({ imageService: 'passthrough' }),
+  session: false,
 
   integrations: [
     tailwind({ applyBaseStyles: false }),
@@ -29,7 +28,10 @@ export default defineConfig({
         'https://onlinecopypaste.com/de/',
         'https://onlinecopypaste.com/pt/',
         'https://onlinecopypaste.com/ko/',
-        'https://onlinecopypaste.com/it/'
+        'https://onlinecopypaste.com/it/',
+        'https://onlinecopypaste.com/privacy',
+        'https://onlinecopypaste.com/terms',
+        'https://onlinecopypaste.com/contact'
       ]
     })
   ]

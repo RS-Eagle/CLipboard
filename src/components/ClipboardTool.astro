@@ -1,12 +1,12 @@
 ---
 ---
-<div class="max-w-3xl mx-auto w-full bg-white/90 dark:bg-slate-800/90 rounded-2xl shadow-xl p-5 md:p-6 mt-3 border border-slate-200 dark:border-slate-700">
+<div class="max-w-3xl mx-auto w-full bg-white/90 dark:bg-slate-800/90 rounded-2xl shadow-xl p-5 md:p-6 border border-slate-200 dark:border-slate-700 mt-3">
   
-  <div aria-live="polite" id="status-message" class="text-center font-medium text-red-600 dark:text-red-400 mb-4 h-6"></div>
+
 
   <div id="state-paste" class="">
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5">
-      <h2 class="text-xl font-semibold text-slate-900 dark:text-white">Paste your text</h2>
+    <div class="flex flex-col sm:flex-row sm:justify-between justify-center  sm:items-center gap-3 mb-3">
+      <h2 class="text-xl  font-semibold text-slate-900 dark:text-white">Paste your text</h2>
       
       <button id="btn-show-receive" class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-amber-700 bg-amber-50 border border-amber-200 hover:bg-amber-100 dark:text-amber-300 dark:bg-amber-900/30 dark:border-amber-800 dark:hover:bg-amber-900/50 rounded-xl transition-all w-full sm:w-auto shadow-sm active:scale-95">
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -16,7 +16,7 @@
       </button>
     </div>
     
-    <textarea id="text-input" class="w-full h-32 md:h-40 p-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-amber-500 outline-none resize-y mb-2" placeholder="Paste text, links, notes, code, or anything else you want to transfer..."></textarea>
+    <textarea id="text-input" class="w-full h-52 md:h-60 p-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-amber-500 outline-none resize-y mb-2" placeholder="Paste text, links, notes, code, or anything else you want to transfer..."></textarea>
     
     <div class="flex justify-between text-sm text-slate-500 mb-6">
       <span>Words: <span id="word-count">0</span></span>
@@ -143,11 +143,11 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content })
       });
-      const data = await res.json();
+      const data = await res.json() as { code?: string; error?: string };
       
       if (res.ok) {
-        currentCode = data.code;
-        els.displayCode!.textContent = data.code;
+        currentCode = data.code ?? '';
+        els.displayCode!.textContent = data.code ?? '';
         showState('code');
         els.textInput.value = '';
         els.charCount!.textContent = '0';
@@ -189,10 +189,10 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code })
       });
-      const data = await res.json();
+      const data = await res.json() as { content?: string; error?: string };
 
       if (res.ok) {
-        retrievedText = data.content;
+        retrievedText = data.content ?? '';
         els.displayText!.textContent = retrievedText;
         showState('result');
         els.codeInput.value = '';
