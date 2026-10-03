@@ -393,6 +393,13 @@ const labels = t[lang] || t.en;
       <h2 class="text-xl font-bold text-slate-900 dark:text-white">
         {labels.pasteTitle}
       </h2>
+      <button
+        id="btn-have-a-code"
+        onclick="document.getElementById('btn-generate').scrollIntoView({behavior: 'smooth'});"
+        class="py-2 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl transition-all shadow-md hover:shadow-lg active:scale-[0.99] disabled:opacity-50 text-base flex items-center justify-center gap-2"
+      >
+        Have a code ?
+      </button>
     </div>
 
     <textarea
@@ -443,7 +450,7 @@ const labels = t[lang] || t.en;
     </div>
 
     <!-- Direct Code Input Group (Visible directly, matching Live Clipboard) -->
-    <div class="max-w-md mx-auto">
+    <div class="max-w-md mx-auto" id="have-a-code">
       <div class="flex flex-col sm:flex-row gap-3">
         <input
           type="text"
@@ -466,7 +473,7 @@ const labels = t[lang] || t.en;
     <a
       id="btn-live-clipboard"
       href={liveInfo.href}
-      class="mt-4 w-full py-3 px-6 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700/60 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 border border-slate-300 dark:border-slate-600 shadow-sm group active:scale-[0.99] text-sm md:text-base"
+      class="relative mt-4 w-full py-3 px-6 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700/60 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 border border-slate-300 dark:border-slate-600 shadow-sm group active:scale-[0.99] text-sm md:text-base"
     >
       <span class="relative flex h-2.5 w-2.5">
         <span
