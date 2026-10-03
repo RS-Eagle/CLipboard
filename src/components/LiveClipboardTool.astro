@@ -1,0 +1,1560 @@
+---
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'en' } = Astro.props;
+
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || 'https://kyzdjurxksqmyyeccbad.supabase.co';
+const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5emRqdXJ4a3NxbXl5ZWNjYmFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0NTMxMzksImV4cCI6MjEwNDAyOTEzOX0.7gNIX7PLoVhtps1EHnacSGltW_idjhLRVbSLMdMoOW0';
+
+const t: Record<string, {
+  createTitle: string;
+  createDesc: string;
+  btnStart: string;
+  btnStarting: string;
+  orJoin: string;
+  joinPlaceholder: string;
+  btnJoin: string;
+  btnJoining: string;
+  sessionCodeLabel: string;
+  copyCode: string;
+  codeCopied: string;
+  copyLink: string;
+  linkCopied: string;
+  statusConnected: string;
+  statusConnecting: string;
+  statusReconnecting: string;
+  statusDisconnected: string;
+  btnReconnect: string;
+  synced: string;
+  saving: string;
+  saved: string;
+  updatedRemote: string;
+  placeholderTextarea: string;
+  words: string;
+  chars: string;
+  btnCopyText: string;
+  btnCopiedText: string;
+  btnClear: string;
+  btnLeave: string;
+  tipInstructions: string;
+  errorNotFound: string;
+  errorGeneric: string;
+  errorLength: string;
+  btnGenerateMore: string;
+  clipboardTitle: string;
+  maxReached: string;
+    deleteBtn: string;
+    confirmDelete: string;
+    qrCode: string;
+    scanQrCode: string;
+    qrModalTitle: string;
+    qrModalSubtitle: string;
+    close: string;
+  }> = {
+  en: {
+    createTitle: 'Start a Live Clipboard Session',
+    createDesc: 'Connect two or more devices to the same clipboard. Any text pasted or edited on one screen updates automatically on the other.',
+    btnStart: 'Start Live Clipboard',
+    btnStarting: 'Starting Session...',
+    orJoin: 'Or join an existing session',
+    joinPlaceholder: 'Enter 6-digit code',
+    btnJoin: 'Join Session',
+    btnJoining: 'Connecting...',
+    sessionCodeLabel: 'Session Code',
+    copyCode: 'Copy Code',
+    codeCopied: 'Copied!',
+    copyLink: 'Copy Link',
+    linkCopied: 'Link Copied!',
+    statusConnected: 'Connected',
+    statusConnecting: 'Connecting...',
+    statusReconnecting: 'Reconnecting...',
+    statusDisconnected: 'Disconnected',
+    btnReconnect: 'Reconnect',
+    synced: 'Synced',
+    saving: 'Saving...',
+    saved: 'Saved',
+    updatedRemote: 'Updated from connected device',
+    placeholderTextarea: 'Type or paste anything here... Changes sync to your other connected device in real time.',
+    words: 'Words',
+    chars: 'Characters',
+    btnCopyText: 'Copy Text',
+    btnCopiedText: 'Copied!',
+    btnClear: 'Clear',
+    btnLeave: 'Leave Session',
+    tipInstructions: 'Open this page on your other device and enter code {code}, or open the direct link.',
+    errorNotFound: 'Session not found or has expired.',
+    errorGeneric: 'Network error. Please try again.',
+    errorLength: 'Text exceeds maximum length of 20,000 characters.',
+    btnGenerateMore: 'Generate One More Clipboard',
+    clipboardTitle: 'Clipboard',
+    maxReached: 'Maximum 4 clipboards reached',
+    deleteBtn: 'Delete',
+    confirmDelete: 'Delete this clipboard?',
+    qrCode: 'QR Code',
+    scanQrCode: 'Scan with phone camera',
+    qrModalTitle: 'Scan QR to Join Session',
+    qrModalSubtitle: 'Point your phone camera to instantly connect to this live session.',
+    close: 'Close'
+  },
+  es: {
+    createTitle: 'Iniciar sesión de portapapeles en vivo',
+    createDesc: 'Conecta dos o más dispositivos al mismo portapapeles. El texto escrito o pegado en una pantalla se actualiza automáticamente en la otra.',
+    btnStart: 'Iniciar portapapeles en vivo',
+    btnStarting: 'Iniciando sesión...',
+    orJoin: 'O únete a una sesión existente',
+    joinPlaceholder: 'Código de 6 dígitos',
+    btnJoin: 'Unirse a la sesión',
+    btnJoining: 'Conectando...',
+    sessionCodeLabel: 'Código de sesión',
+    copyCode: 'Copiar código',
+    codeCopied: '¡Copiado!',
+    copyLink: 'Copiar enlace',
+    linkCopied: '¡Enlace copiado!',
+    statusConnected: 'Conectado',
+    statusConnecting: 'Conectando...',
+    statusReconnecting: 'Reconectando...',
+    statusDisconnected: 'Desconectado',
+    btnReconnect: 'Reconectar',
+    synced: 'Sincronizado',
+    saving: 'Guardando...',
+    saved: 'Guardado',
+    updatedRemote: 'Actualizado desde el otro dispositivo',
+    placeholderTextarea: 'Escribe o pega aquí... Los cambios se sincronizan en tiempo real con tu otro dispositivo.',
+    words: 'Palabras',
+    chars: 'Caracteres',
+    btnCopyText: 'Copiar texto',
+    btnCopiedText: '¡Copiado!',
+    btnClear: 'Limpiar',
+    btnLeave: 'Salir de la sesión',
+    tipInstructions: 'Abre esta página en tu otro dispositivo e introduce el código {code}, o usa el enlace directo.',
+    errorNotFound: 'Sesión no encontrada o caducada.',
+    errorGeneric: 'Error de red. Inténtalo de nuevo.',
+    errorLength: 'El texto supera el límite de 20.000 caracteres.',
+    btnGenerateMore: 'Generar un portapapeles más',
+    clipboardTitle: 'Portapapeles',
+    maxReached: 'Límite máximo de 4 portapapeles alcanzado',
+    deleteBtn: 'Eliminar',
+    confirmDelete: '¿Eliminar este portapapeles?',
+    qrCode: 'Código QR',
+    scanQrCode: 'Escanear con cámara',
+    qrModalTitle: 'Escanear código QR',
+    qrModalSubtitle: 'Apunta con la cámara de tu móvil para unirte a esta sesión en vivo.',
+    close: 'Cerrar'
+  },
+  ja: {
+    createTitle: 'ライブクリップボードを開始',
+    createDesc: '複数のデバイスを同じクリップボードに接続。一方の画面で入力・貼り付けたテキストが、もう一方にもリアルタイムで自動同期されます。',
+    btnStart: 'ライブセッションを開始',
+    btnStarting: 'セッション開始中...',
+    orJoin: 'または既存のセッションに参加',
+    joinPlaceholder: '6桁のコードを入力',
+    btnJoin: '参加する',
+    btnJoining: '接続中...',
+    sessionCodeLabel: 'セッションコード',
+    copyCode: 'コードをコピー',
+    codeCopied: 'コピー完了！',
+    copyLink: 'リンクをコピー',
+    linkCopied: 'リンクをコピー！',
+    statusConnected: '接続済み',
+    statusConnecting: '接続中...',
+    statusReconnecting: '再接続中...',
+    statusDisconnected: '切断中',
+    btnReconnect: '再接続',
+    synced: '同期済み',
+    saving: '保存中...',
+    saved: '保存済み',
+    updatedRemote: '接続デバイスから更新されました',
+    placeholderTextarea: 'ここにテキストを入力または貼り付け... 接続中のデバイスにリアルタイムで反映されます。',
+    words: '単語数',
+    chars: '文字数',
+    btnCopyText: 'テキストをコピー',
+    btnCopiedText: 'コピー完了！',
+    btnClear: 'クリア',
+    btnLeave: 'セッションを終了',
+    tipInstructions: '別のデバイスでこのページを開き、コード {code} を入力するか、直接リンクを開いてください。',
+    errorNotFound: 'セッションが見つからないか、有効期限が切れています。',
+    errorGeneric: 'ネットワークエラーが発生しました。再試行してください。',
+    errorLength: '文字数が上限（20,000文字）を超えています。',
+    btnGenerateMore: 'クリップボードをもう1つ追加',
+    clipboardTitle: 'クリップボード',
+    maxReached: '最大4つのクリップボードに達しました',
+    deleteBtn: '削除',
+    confirmDelete: 'このクリップボードを削除しますか？',
+    qrCode: 'QRコード',
+    scanQrCode: 'スマホのカメラでスキャン',
+    qrModalTitle: 'QRコードをスキャンして参加',
+    qrModalSubtitle: 'スマートフォンのカメラで読み取って即座にセッションに参加できます。',
+    close: '閉じる'
+  },
+  fr: {
+    createTitle: 'Démarrer une session de presse-papiers en direct',
+    createDesc: 'Connectez deux ou plusieurs appareils au même presse-papiers. Le texte tapé ou collé sur un écran se synchronise automatiquement sur l’autre.',
+    btnStart: 'Démarrer le presse-papiers en direct',
+    btnStarting: 'Démarrage...',
+    orJoin: 'Ou rejoindre une session existante',
+    joinPlaceholder: 'Entrez le code à 6 chiffres',
+    btnJoin: 'Rejoindre la session',
+    btnJoining: 'Connexion...',
+    sessionCodeLabel: 'Code de session',
+    copyCode: 'Copier le code',
+    codeCopied: 'Copié !',
+    copyLink: 'Copier le lien',
+    linkCopied: 'Lien copié !',
+    statusConnected: 'Connecté',
+    statusConnecting: 'Connexion...',
+    statusReconnecting: 'Reconnexion...',
+    statusDisconnected: 'Déconnecté',
+    btnReconnect: 'Reconnecter',
+    synced: 'Synchronisé',
+    saving: 'Enregistrement...',
+    saved: 'Enregistré',
+    updatedRemote: 'Mis à jour depuis l’appareil connecté',
+    placeholderTextarea: 'Tapez ou collez du texte ici... Les modifications apparaissent en direct sur vos autres appareils.',
+    words: 'Mots',
+    chars: 'Caractères',
+    btnCopyText: 'Copier le texte',
+    btnCopiedText: 'Copié !',
+    btnClear: 'Effacer',
+    btnLeave: 'Quitter la session',
+    tipInstructions: 'Ouvrez cette page sur votre autre appareil et entrez le code {code}, ou partagez le lien direct.',
+    errorNotFound: 'Session introuvable ou expirée.',
+    errorGeneric: 'Erreur réseau. Veuillez réessayer.',
+    errorLength: 'Le texte dépasse la limite de 20 000 caractères.',
+    btnGenerateMore: 'Générer un presse-papiers de plus',
+    clipboardTitle: 'Presse-papiers',
+    maxReached: 'Limite maximale de 4 presse-papiers atteinte',
+    deleteBtn: 'Supprimer',
+    confirmDelete: 'Supprimer ce presse-papiers ?',
+    qrCode: 'Code QR',
+    scanQrCode: 'Scanner avec le téléphone',
+    qrModalTitle: 'Scanner le code QR',
+    qrModalSubtitle: 'Pointez l’appareil photo de votre mobile pour vous connecter instantanément.',
+    close: 'Fermer'
+  },
+  de: {
+    createTitle: 'Live-Zwischenablage starten',
+    createDesc: 'Verbinden Sie zwei oder mehr Geräte mit derselben Zwischenablage. Auf einem Bildschirm eingegebener Text wird in Echtzeit auf dem anderen angezeigt.',
+    btnStart: 'Live-Zwischenablage starten',
+    btnStarting: 'Sitzung startet...',
+    orJoin: 'Oder bestehender Sitzung beitreten',
+    joinPlaceholder: '6-stelligen Code eingeben',
+    btnJoin: 'Sitzung beitreten',
+    btnJoining: 'Verbinde...',
+    sessionCodeLabel: 'Sitzungscode',
+    copyCode: 'Code kopieren',
+    codeCopied: 'Kopiert!',
+    copyLink: 'Link kopieren',
+    linkCopied: 'Link kopiert!',
+    statusConnected: 'Verbunden',
+    statusConnecting: 'Verbinde...',
+    statusReconnecting: 'Verbinde erneut...',
+    statusDisconnected: 'Getrennt',
+    btnReconnect: 'Wieder verbinden',
+    synced: 'Synchronisiert',
+    saving: 'Speichert...',
+    saved: 'Gespeichert',
+    updatedRemote: 'Vom verbundenen Gerät aktualisiert',
+    placeholderTextarea: 'Hier tippen oder einfügen... Änderungen werden in Echtzeit auf Ihrem anderen Gerät angezeigt.',
+    words: 'Wörter',
+    chars: 'Zeichen',
+    btnCopyText: 'Text kopieren',
+    btnCopiedText: 'Kopiert!',
+    btnClear: 'Löschen',
+    btnLeave: 'Sitzung verlassen',
+    tipInstructions: 'Öffnen Sie diese Seite auf Ihrem anderen Gerät und geben Sie den Code {code} ein, oder nutzen Sie den Link.',
+    errorNotFound: 'Sitzung nicht gefunden oder abgelaufen.',
+    errorGeneric: 'Netzwerkfehler. Bitte versuchen Sie es erneut.',
+    errorLength: 'Text überschreitet das Maximum von 20.000 Zeichen.',
+    btnGenerateMore: 'Eine weitere Zwischenablage erstellen',
+    clipboardTitle: 'Zwischenablage',
+    maxReached: 'Maximal 4 Zwischenablagen erreicht',
+    deleteBtn: 'Löschen',
+    confirmDelete: 'Diese Zwischenablage löschen?',
+    qrCode: 'QR-Code',
+    scanQrCode: 'Mit Handy scannen',
+    qrModalTitle: 'QR-Code scannen',
+    qrModalSubtitle: 'Scannen Sie den Code mit der Handykamera, um sofort beizutreten.',
+    close: 'Schließen'
+  },
+  pt: {
+    createTitle: 'Iniciar área de transferência ao vivo',
+    createDesc: 'Conecte dois ou mais dispositivos à mesma área de transferência. O texto digitado ou colado em uma tela aparece em tempo real na outra.',
+    btnStart: 'Iniciar área ao vivo',
+    btnStarting: 'Iniciando...',
+    orJoin: 'Ou entre em uma sessão existente',
+    joinPlaceholder: 'Digite o código de 6 dígitos',
+    btnJoin: 'Entrar na sessão',
+    btnJoining: 'Conectando...',
+    sessionCodeLabel: 'Código da sessão',
+    copyCode: 'Copiar código',
+    codeCopied: 'Copiado!',
+    copyLink: 'Copiar link',
+    linkCopied: 'Link copiado!',
+    statusConnected: 'Conectado',
+    statusConnecting: 'Conectando...',
+    statusReconnecting: 'Reconectando...',
+    statusDisconnected: 'Desconectado',
+    btnReconnect: 'Reconectar',
+    synced: 'Sincronizado',
+    saving: 'Salvando...',
+    saved: 'Salvo',
+    updatedRemote: 'Atualizado do outro dispositivo',
+    placeholderTextarea: 'Digite ou cole aqui... As alterações aparecem no outro dispositivo em tempo real.',
+    words: 'Palavras',
+    chars: 'Caracteres',
+    btnCopyText: 'Copiar texto',
+    btnCopiedText: 'Copiado!',
+    btnClear: 'Limpar',
+    btnLeave: 'Sair da sessão',
+    tipInstructions: 'Abra esta página no seu outro dispositivo e digite o código {code}, ou use o link direto.',
+    errorNotFound: 'Sessão não encontrada ou expirada.',
+    errorGeneric: 'Erro de rede. Tente novamente.',
+    errorLength: 'O texto excede o limite máximo de 20.000 caracteres.',
+    btnGenerateMore: 'Gerar mais uma área de transferência',
+    clipboardTitle: 'Área de transferência',
+    maxReached: 'Limite máximo de 4 áreas atingido',
+    deleteBtn: 'Excluir',
+    confirmDelete: 'Excluir esta área?',
+    qrCode: 'Código QR',
+    scanQrCode: 'Escanear com o celular',
+    qrModalTitle: 'Escanear código QR',
+    qrModalSubtitle: 'Aponte a câmera do seu celular para se conectar instantaneamente.',
+    close: 'Fechar'
+  },
+  ko: {
+    createTitle: '라이브 클립보드 세션 시작',
+    createDesc: '두 개 이상의 기기를 동일한 클립보드에 연결하세요. 한 화면에서 입력하거나 붙여넣은 텍스트가 다른 기기에 실시간으로 자동 반영됩니다.',
+    btnStart: '라이브 클립보드 시작',
+    btnStarting: '세션 생성 중...',
+    orJoin: '또는 기존 세션 참여하기',
+    joinPlaceholder: '6자리 코드 입력',
+    btnJoin: '세션 참여',
+    btnJoining: '연결 중...',
+    sessionCodeLabel: '세션 코드',
+    copyCode: '코드 복사',
+    codeCopied: '복사 완료!',
+    copyLink: '링크 복사',
+    linkCopied: '링크 복사 완료!',
+    statusConnected: '연결됨',
+    statusConnecting: '연결 중...',
+    statusReconnecting: '재연결 중...',
+    statusDisconnected: '연결 끊김',
+    btnReconnect: '다시 연결',
+    synced: '동기화됨',
+    saving: '저장 중...',
+    saved: '저장됨',
+    updatedRemote: '연결된 기기에서 실시간 업데이트됨',
+    placeholderTextarea: '여기에 텍스트를 입력하거나 붙여넣으세요... 연결된 기기에 실시간으로 반영됩니다.',
+    words: '단어 수',
+    chars: '글자 수',
+    btnCopyText: '텍스트 복사',
+    btnCopiedText: '복사 완료!',
+    btnClear: '지우기',
+    btnLeave: '세션 나가기',
+    tipInstructions: '다른 기기에서 이 페이지를 열고 코드 {code}를 입력하거나 링크를 여세요.',
+    errorNotFound: '세션을 찾을 수 없거나 만료되었습니다.',
+    errorGeneric: '네트워크 오류가 발생했습니다. 다시 시도해 주세요.',
+    errorLength: '텍스트가 최대 20,000자를 초과했습니다.',
+    btnGenerateMore: '클립보드 하나 더 생성',
+    clipboardTitle: '클립보드',
+    maxReached: '최대 4개의 클립보드에 도달했습니다',
+    deleteBtn: '삭제',
+    confirmDelete: '이 클립보드를 삭제하시겠습니까?',
+    qrCode: 'QR 코드',
+    scanQrCode: '휴대폰 카메라로 스캔',
+    qrModalTitle: 'QR 코드 스캔하여 참여',
+    qrModalSubtitle: '스마트폰 카메라로 스캔하여 즉시 라이브 세션에 연결하세요.',
+    close: '닫기'
+  },
+  it: {
+    createTitle: 'Avvia una sessione di appunti live',
+    createDesc: 'Collega due o più dispositivi agli stessi appunti. Qualsiasi testo digitato o incollato su uno schermo si aggiorna automaticamente sull’altro.',
+    btnStart: 'Avvia appunti live',
+    btnStarting: 'Avvio in corso...',
+    orJoin: 'Oppure unisciti a una sessione esistente',
+    joinPlaceholder: 'Inserisci il codice a 6 cifre',
+    btnJoin: 'Unisciti alla sessione',
+    btnJoining: 'Connessione...',
+    sessionCodeLabel: 'Codice sessione',
+    copyCode: 'Copia codice',
+    codeCopied: 'Copiato!',
+    copyLink: 'Copia link',
+    linkCopied: 'Link copiato!',
+    statusConnected: 'Connesso',
+    statusConnecting: 'Connessione...',
+    statusReconnecting: 'Riconnessione...',
+    statusDisconnected: 'Disconnesso',
+    btnReconnect: 'Riconnetti',
+    synced: 'Sincronizzato',
+    saving: 'Salvataggio...',
+    saved: 'Salvato',
+    updatedRemote: 'Aggiornato dal dispositivo connesso',
+    placeholderTextarea: 'Digita o incolla del testo qui... Le modifiche vengono sincronizzate in tempo reale sul tuo altro dispositivo.',
+    words: 'Parole',
+    chars: 'Caratteri',
+    btnCopyText: 'Copia testo',
+    btnCopiedText: 'Copiato!',
+    btnClear: 'Cancella',
+    btnLeave: 'Lascia sessione',
+    tipInstructions: 'Apri questa pagina sull’altro dispositivo e inserisci il codice {code}, oppure usa il link diretto.',
+    errorNotFound: 'Sessione non trovata o scaduta.',
+    errorGeneric: 'Errore di rete. Riprova.',
+    errorLength: 'Il testo supera la lunghezza massima di 20.000 caratteri.',
+    btnGenerateMore: 'Genera un altro blocco appunti',
+    clipboardTitle: 'Appunti',
+    maxReached: 'Raggiunto il limite massimo di 4 blocchi appunti',
+    deleteBtn: 'Elimina',
+    confirmDelete: 'Eliminare questo blocco appunti?',
+    qrCode: 'Codice QR',
+    scanQrCode: 'Scansiona con il telefono',
+    qrModalTitle: 'Scansiona codice QR',
+    qrModalSubtitle: 'Inquadra con la fotocamera del tuo smartphone per collegarti subito.',
+    close: 'Chiudi'
+  }
+};
+
+const labels = t[lang] || t.en;
+---
+
+<div 
+  id="live-tool-container"
+  class="max-w-3xl mx-auto w-full bg-white/90 dark:bg-slate-800/90 rounded-2xl shadow-xl p-5 md:p-6 border border-slate-200 dark:border-slate-700 mt-3 text-left transition-all"
+  data-supabase-url={supabaseUrl}
+  data-supabase-key={supabaseAnonKey}
+  data-labels={JSON.stringify(labels)}
+>
+  <!-- Global error / notification message banner -->
+  <div id="live-status-message" class="mb-4 p-3 rounded-lg hidden text-sm font-medium"></div>
+
+  <!-- STATE: IDLE (CREATE OR JOIN) -->
+  <div id="state-idle" class="space-y-6">
+    <div class="text-center py-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-3 border border-emerald-200 dark:border-emerald-800">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        Live Connection
+      </div>
+      <h2 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-2">{labels.createTitle}</h2>
+      <p class="text-slate-600 dark:text-slate-400 text-sm max-w-lg mx-auto leading-relaxed">{labels.createDesc}</p>
+    </div>
+
+    <!-- Start Button Card -->
+    <div class="p-5 rounded-2xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-800/50 text-center">
+      <button 
+        id="btn-live-start" 
+        type="button" 
+        class="w-full py-3.5 px-6 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl transition-all shadow-md hover:shadow-lg active:scale-[0.99] disabled:opacity-50 text-base flex items-center justify-center gap-2"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+        <span id="txt-live-start">{labels.btnStart}</span>
+      </button>
+    </div>
+
+    <!-- Divider -->
+    <div class="relative flex items-center justify-center my-6">
+      <div class="border-t border-slate-200 dark:border-slate-700 w-full"></div>
+      <span class="bg-white dark:bg-slate-800 px-4 text-xs font-medium text-slate-500 uppercase tracking-wider absolute">
+        {labels.orJoin}
+      </span>
+    </div>
+
+    <!-- Join by Code Input Group -->
+    <div class="max-w-md mx-auto">
+      <div class="flex flex-col sm:flex-row gap-3">
+        <input 
+          type="text" 
+          id="live-code-input" 
+          maxlength="6" 
+          placeholder={labels.joinPlaceholder} 
+          class="flex-1 text-center font-mono text-2xl tracking-[0.25em] p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white placeholder:tracking-normal placeholder:font-sans placeholder:text-sm focus:ring-2 focus:ring-amber-500 outline-none uppercase"
+        />
+        <button 
+          id="btn-live-join" 
+          type="button" 
+          class="py-3 px-6 bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white font-semibold rounded-xl transition-all active:scale-[0.99] disabled:opacity-50 text-sm whitespace-nowrap"
+        >
+          <span id="txt-live-join">{labels.btnJoin}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATE: ACTIVE SESSION -->
+  <div id="state-active" class="hidden space-y-5">
+    <!-- Top Session Bar -->
+    <div class="p-4 rounded-2xl bg-slate-100/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700 space-y-3 shadow-sm">
+      <!-- Row 1: Session Info, QR Preview, Status and Leave -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <!-- Session Code Display & Scalable QR Thumbnail -->
+        <div class="flex items-center gap-3">
+          <!-- Small Scalable QR Thumbnail Button -->
+          <button 
+            id="btn-open-live-qr" 
+            type="button" 
+            class="group relative bg-white p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:border-amber-500 dark:hover:border-amber-500 hover:shadow transition-all flex flex-col items-center justify-center shrink-0 cursor-pointer active:scale-95"
+            title={labels.scanQrCode}
+          >
+            <div id="live-qr-thumb" class="w-11 h-11 md:w-12 md:h-12 [&>svg]:w-full [&>svg]:h-full"></div>
+            <span class="text-[9px] font-bold text-slate-500 group-hover:text-amber-600 dark:group-hover:text-amber-400 leading-tight mt-0.5 tracking-tight">QR CODE</span>
+          </button>
+
+          <div>
+            <span class="text-[11px] uppercase font-bold text-slate-500 tracking-wider block">{labels.sessionCodeLabel}</span>
+            <span id="active-code-display" class="font-mono text-2xl md:text-3xl font-black text-amber-600 dark:text-amber-400 tracking-widest leading-none">
+              ------
+            </span>
+          </div>
+        </div>
+
+        <!-- Connection Status & Leave Button -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Status indicator badge -->
+          <div id="connection-status-badge" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+            <span id="status-indicator-dot" class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span id="status-text">{labels.statusConnected}</span>
+          </div>
+
+          <!-- Manual Reconnect Button -->
+          <button 
+            id="btn-reconnect" 
+            type="button" 
+            class="hidden px-2.5 py-1 text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-lg shadow-sm transition-all"
+          >
+            {labels.btnReconnect}
+          </button>
+
+          <!-- Leave Session -->
+          <button 
+            id="btn-leave-session" 
+            type="button" 
+            class="text-xs font-semibold text-slate-500 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400 px-2.5 py-1 rounded-lg transition-colors border border-transparent hover:border-slate-300 dark:hover:border-slate-600"
+            title={labels.btnLeave}
+          >
+            {labels.btnLeave}
+          </button>
+        </div>
+      </div>
+
+      <!-- Row 2: Action Buttons: Copy Link, Copy Code, Copy Text, View QR -->
+      <div class="pt-2 border-t border-slate-200/80 dark:border-slate-800/80 flex flex-wrap items-center gap-2">
+        <button 
+          id="btn-copy-live-link" 
+          type="button" 
+          class="py-1.5 px-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+          title={labels.copyLink}
+        >
+          <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+          </svg>
+          <span id="txt-copy-link">{labels.copyLink}</span>
+        </button>
+
+        <button 
+          id="btn-copy-live-code" 
+          type="button" 
+          class="py-1.5 px-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+          title={labels.copyCode}
+        >
+          <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+          </svg>
+          <span id="txt-copy-code">{labels.copyCode}</span>
+        </button>
+
+        <button 
+          id="btn-copy-live-text-top" 
+          type="button" 
+          class="py-1.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+          title={labels.btnCopyText}
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          <span id="txt-copy-live-text-top">{labels.btnCopyText}</span>
+        </button>
+
+        <button 
+          id="btn-open-live-qr-btn" 
+          type="button" 
+          class="py-1.5 px-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all ml-auto"
+          title={labels.scanQrCode}
+        >
+          <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+          </svg>
+          <span>{labels.qrCode}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- QR ZOOM MODAL -->
+    <div id="live-qr-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-slate-200 dark:border-slate-700 text-center relative">
+        <button id="btn-close-live-qr-modal" type="button" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg" aria-label={labels.close}>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+        
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">
+          Live QR Connect
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">{labels.qrModalTitle}</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">{labels.qrModalSubtitle}</p>
+        
+        <!-- Scalable QR Code in clean white tile -->
+        <div class="bg-white p-3 rounded-2xl shadow-inner border border-slate-200 inline-block mx-auto mb-4">
+          <div id="live-qr-modal-code" class="w-52 h-52 [&>svg]:w-full [&>svg]:h-full"></div>
+        </div>
+
+        <!-- Share Link Preview -->
+        <div class="bg-slate-100 dark:bg-slate-900/80 p-3 rounded-xl mb-4 border border-slate-200 dark:border-slate-700/60 text-left">
+          <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Session Link</div>
+          <div id="live-qr-modal-link" class="text-xs font-mono text-slate-700 dark:text-slate-300 truncate select-all"></div>
+        </div>
+
+        <div class="flex gap-2">
+          <button id="btn-live-modal-copy-link" type="button" class="flex-1 py-2.5 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-xs transition-colors shadow-sm">
+            {labels.copyLink}
+          </button>
+          <button id="btn-live-modal-close" type="button" class="py-2.5 px-4 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl text-xs transition-colors">
+            {labels.close}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Friendly instruction tip banner -->
+    <div id="live-tip-banner" class="text-xs text-slate-600 dark:text-slate-400 bg-amber-50/70 dark:bg-amber-950/30 p-2.5 rounded-lg border border-amber-200/60 dark:border-amber-800/40 flex items-center justify-between">
+      <span id="live-tip-text">
+        {labels.tipInstructions.replace('{code}', '------')}
+      </span>
+      <span id="sync-state-badge" class="font-medium text-emerald-600 dark:text-emerald-400 shrink-0 ml-2">
+        {labels.synced}
+      </span>
+    </div>
+
+    <!-- DYNAMIC CLIPBOARDS CONTAINER (1 to 4 Clipboards) -->
+    <div id="clipboards-list" class="space-y-6"></div>
+
+    <!-- BOTTOM ACTION AREA: GENERATE ONE MORE CLIPBOARD -->
+    <div id="add-clipboard-container" class="pt-2">
+      <button 
+        id="btn-add-clipboard" 
+        type="button" 
+        class="w-full py-3.5 px-6 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/60 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 border-2 border-dashed border-slate-300 dark:border-slate-600 hover:border-amber-500 dark:hover:border-amber-500 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed group"
+      >
+        <svg class="w-5 h-5 text-amber-500 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        <span id="txt-add-clipboard">{labels.btnGenerateMore}</span>
+      </button>
+      <p id="max-clipboards-notice" class="hidden text-center text-xs font-medium text-amber-600 dark:text-amber-400 mt-2">
+        {labels.maxReached}
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+  import QRCode from 'qrcode';
+
+  interface LiveClipboardItem {
+    id: string;
+    title: string;
+    content: string;
+    createdAt: number;
+    updatedAt: number;
+  }
+
+  interface ToolLabels {
+    createTitle: string;
+    createDesc: string;
+    btnStart: string;
+    btnStarting: string;
+    orJoin: string;
+    joinPlaceholder: string;
+    btnJoin: string;
+    btnJoining: string;
+    sessionCodeLabel: string;
+    copyCode: string;
+    codeCopied: string;
+    copyLink: string;
+    linkCopied: string;
+    statusConnected: string;
+    statusConnecting: string;
+    statusReconnecting: string;
+    statusDisconnected: string;
+    btnReconnect: string;
+    synced: string;
+    saving: string;
+    saved: string;
+    updatedRemote: string;
+    placeholderTextarea: string;
+    words: string;
+    chars: string;
+    btnCopyText: string;
+    btnCopiedText: string;
+    btnClear: string;
+    btnLeave: string;
+    tipInstructions: string;
+    errorNotFound: string;
+    errorGeneric: string;
+    errorLength: string;
+    btnGenerateMore: string;
+    clipboardTitle: string;
+    maxReached: string;
+    deleteBtn: string;
+    confirmDelete: string;
+    qrCode: string;
+    scanQrCode: string;
+    qrModalTitle: string;
+    qrModalSubtitle: string;
+    close: string;
+  }
+
+  const container = document.getElementById('live-tool-container') as HTMLDivElement;
+  if (!container) {
+    throw new Error('Container not found');
+  }
+
+  const supabaseUrl = container.dataset.supabaseUrl || '';
+  const supabaseKey = container.dataset.supabaseKey || '';
+  const labels: ToolLabels = JSON.parse(container.dataset.labels || '{}');
+
+  const supabase = createClient(supabaseUrl, supabaseKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false
+    }
+  });
+
+  // DOM Elements
+  const stateIdle = document.getElementById('state-idle') as HTMLDivElement;
+  const stateActive = document.getElementById('state-active') as HTMLDivElement;
+  const statusMessage = document.getElementById('live-status-message') as HTMLDivElement;
+
+  const btnStart = document.getElementById('btn-live-start') as HTMLButtonElement;
+  const txtStart = document.getElementById('txt-live-start') as HTMLSpanElement;
+  const inputJoinCode = document.getElementById('live-code-input') as HTMLInputElement;
+  const btnJoin = document.getElementById('btn-live-join') as HTMLButtonElement;
+  const txtJoin = document.getElementById('txt-live-join') as HTMLSpanElement;
+
+  const activeCodeDisplay = document.getElementById('active-code-display') as HTMLSpanElement;
+  const btnCopyCode = document.getElementById('btn-copy-live-code') as HTMLButtonElement;
+  const txtCopyCode = document.getElementById('txt-copy-code') as HTMLSpanElement;
+  const btnCopyLink = document.getElementById('btn-copy-live-link') as HTMLButtonElement;
+  const txtCopyLink = document.getElementById('txt-copy-link') as HTMLSpanElement;
+  const btnCopyTextTop = document.getElementById('btn-copy-live-text-top') as HTMLButtonElement;
+  const txtCopyTextTop = document.getElementById('txt-copy-live-text-top') as HTMLSpanElement;
+  const btnLeave = document.getElementById('btn-leave-session') as HTMLButtonElement;
+  const btnReconnect = document.getElementById('btn-reconnect') as HTMLButtonElement;
+
+  // QR elements
+  const btnOpenLiveQr = document.getElementById('btn-open-live-qr') as HTMLButtonElement;
+  const btnOpenLiveQrBtn = document.getElementById('btn-open-live-qr-btn') as HTMLButtonElement;
+  const liveQrThumb = document.getElementById('live-qr-thumb') as HTMLDivElement;
+  const liveQrModal = document.getElementById('live-qr-modal') as HTMLDivElement;
+  const liveQrModalCode = document.getElementById('live-qr-modal-code') as HTMLDivElement;
+  const liveQrModalLink = document.getElementById('live-qr-modal-link') as HTMLDivElement;
+  const btnCloseLiveQrModal = document.getElementById('btn-close-live-qr-modal') as HTMLButtonElement;
+  const btnLiveModalClose = document.getElementById('btn-live-modal-close') as HTMLButtonElement;
+  const btnLiveModalCopyLink = document.getElementById('btn-live-modal-copy-link') as HTMLButtonElement;
+
+  const statusBadge = document.getElementById('connection-status-badge') as HTMLDivElement;
+  const statusDot = document.getElementById('status-indicator-dot') as HTMLSpanElement;
+  const statusText = document.getElementById('status-text') as HTMLSpanElement;
+  const syncStateBadge = document.getElementById('sync-state-badge') as HTMLSpanElement;
+  const tipText = document.getElementById('live-tip-text') as HTMLSpanElement;
+
+  const clipboardsList = document.getElementById('clipboards-list') as HTMLDivElement;
+  const btnAddClipboard = document.getElementById('btn-add-clipboard') as HTMLButtonElement;
+  const maxNotice = document.getElementById('max-clipboards-notice') as HTMLParagraphElement;
+
+  // Session state
+  let currentCode = '';
+  let sessionId = '';
+  let clipboards: LiveClipboardItem[] = [];
+  let currentChannel: ReturnType<typeof supabase.channel> | null = null;
+  const deviceId = typeof crypto !== 'undefined' && crypto.randomUUID 
+    ? crypto.randomUUID() 
+    : 'dev_' + Math.random().toString(36).substring(2, 12);
+
+  // Timers mapped by clipboardId
+  const saveTimers = new Map<string, ReturnType<typeof setTimeout>>();
+  const broadcastTimers = new Map<string, ReturnType<typeof setTimeout>>();
+  const pulseTimers = new Map<string, ReturnType<typeof setTimeout>>();
+  let isConnecting = false;
+
+  const showBannerMessage = (msg: string, isError = true) => {
+    if (!msg) {
+      statusMessage.classList.add('hidden');
+      statusMessage.textContent = '';
+      return;
+    }
+    statusMessage.textContent = msg;
+    statusMessage.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-emerald-100', 'text-emerald-700');
+    if (isError) {
+      statusMessage.classList.add('bg-red-100', 'text-red-700', 'dark:bg-red-900/30', 'dark:text-red-400');
+    } else {
+      statusMessage.classList.add('bg-emerald-100', 'text-emerald-700', 'dark:bg-emerald-900/30', 'dark:text-emerald-400');
+    }
+  };
+
+  type ConnState = 'connected' | 'connecting' | 'reconnecting' | 'disconnected';
+  const setConnectionState = (state: ConnState) => {
+    statusBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all';
+    btnReconnect.classList.add('hidden');
+
+    if (state === 'connected') {
+      statusBadge.classList.add('bg-emerald-100', 'text-emerald-800', 'dark:bg-emerald-950/60', 'dark:text-emerald-300', 'border', 'border-emerald-300', 'dark:border-emerald-800');
+      statusDot.innerHTML = '<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>';
+      statusText.textContent = labels.statusConnected;
+    } else if (state === 'connecting') {
+      statusBadge.classList.add('bg-amber-100', 'text-amber-800', 'dark:bg-amber-950/60', 'dark:text-amber-300', 'border', 'border-amber-300', 'dark:border-amber-800');
+      statusDot.innerHTML = '<span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500 animate-pulse"></span>';
+      statusText.textContent = labels.statusConnecting;
+    } else if (state === 'reconnecting') {
+      statusBadge.classList.add('bg-amber-100', 'text-amber-800', 'dark:bg-amber-950/60', 'dark:text-amber-300', 'border', 'border-amber-300', 'dark:border-amber-800');
+      statusDot.innerHTML = '<span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500 animate-pulse"></span>';
+      statusText.textContent = labels.statusReconnecting;
+    } else {
+      statusBadge.classList.add('bg-rose-100', 'text-rose-800', 'dark:bg-rose-950/60', 'dark:text-rose-300', 'border', 'border-rose-300', 'dark:border-rose-800');
+      statusDot.innerHTML = '<span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>';
+      statusText.textContent = labels.statusDisconnected;
+      btnReconnect.classList.remove('hidden');
+    }
+  };
+
+  const setSyncBadge = (state: 'synced' | 'saving' | 'saved') => {
+    if (state === 'saving') {
+      syncStateBadge.textContent = labels.saving;
+      syncStateBadge.className = 'font-medium text-amber-600 dark:text-amber-400 shrink-0 ml-2 animate-pulse';
+    } else if (state === 'saved') {
+      syncStateBadge.textContent = labels.saved;
+      syncStateBadge.className = 'font-medium text-emerald-600 dark:text-emerald-400 shrink-0 ml-2';
+      setTimeout(() => {
+        if (syncStateBadge.textContent === labels.saved) {
+          syncStateBadge.textContent = labels.synced;
+        }
+      }, 1500);
+    } else {
+      syncStateBadge.textContent = labels.synced;
+      syncStateBadge.className = 'font-medium text-slate-500 dark:text-slate-400 shrink-0 ml-2';
+    }
+  };
+
+  const updateAddButtonState = () => {
+    if (clipboards.length >= 4) {
+      btnAddClipboard.disabled = true;
+      btnAddClipboard.classList.add('opacity-40', 'cursor-not-allowed');
+      maxNotice.classList.remove('hidden');
+    } else {
+      btnAddClipboard.disabled = false;
+      btnAddClipboard.classList.remove('opacity-40', 'cursor-not-allowed');
+      maxNotice.classList.add('hidden');
+    }
+  };
+
+  // Build a single clipboard DOM card safely without unsafe innerHTML
+  const createClipboardCard = (item: LiveClipboardItem, index: number): HTMLDivElement => {
+    const card = document.createElement('div');
+    card.id = `card-${item.id}`;
+    card.className = 'bg-white/95 dark:bg-slate-800/90 rounded-2xl p-4 md:p-5 border border-slate-200 dark:border-slate-700 shadow-md space-y-3 transition-all relative';
+
+    // Header bar
+    const header = document.createElement('div');
+    header.className = 'flex flex-wrap items-center justify-between gap-2 pb-1 border-b border-slate-100 dark:border-slate-700/60';
+
+    // Title group with pulse indicator
+    const titleGroup = document.createElement('div');
+    titleGroup.className = 'flex items-center gap-2.5';
+
+    const titleEl = document.createElement('h3');
+    titleEl.className = 'font-bold text-base text-slate-900 dark:text-white flex items-center gap-2';
+    
+    const badgeNumber = document.createElement('span');
+    badgeNumber.className = 'w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 text-xs font-black inline-flex items-center justify-center';
+    badgeNumber.textContent = `${index + 1}`;
+
+    const titleText = document.createElement('span');
+    titleText.textContent = `${labels.clipboardTitle} ${index + 1}`;
+
+    titleEl.appendChild(badgeNumber);
+    titleEl.appendChild(titleText);
+    titleGroup.appendChild(titleEl);
+
+    // Remote update badge
+    const remotePulse = document.createElement('span');
+    remotePulse.id = `pulse-${item.id}`;
+    remotePulse.className = 'opacity-0 transition-opacity duration-300 text-xs font-medium px-2 py-0.5 rounded bg-emerald-500/90 text-white shadow-sm';
+    remotePulse.textContent = labels.updatedRemote;
+    titleGroup.appendChild(remotePulse);
+
+    header.appendChild(titleGroup);
+
+    // Actions group (Copy, Clear, Delete)
+    const actionsGroup = document.createElement('div');
+    actionsGroup.className = 'flex items-center gap-2';
+
+    // Copy text button
+    const btnCopy = document.createElement('button');
+    btnCopy.type = 'button';
+    btnCopy.className = 'py-1.5 px-3 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold rounded-lg shadow-sm transition-all flex items-center gap-1 active:scale-95';
+    btnCopy.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg><span class="btn-copy-label"></span>';
+    const copyLabel = btnCopy.querySelector('.btn-copy-label') as HTMLSpanElement;
+    copyLabel.textContent = labels.btnCopyText;
+
+    btnCopy.addEventListener('click', () => {
+      const currentText = textarea.value;
+      navigator.clipboard.writeText(currentText).then(() => {
+        copyLabel.textContent = labels.btnCopiedText;
+        setTimeout(() => { copyLabel.textContent = labels.btnCopyText; }, 2000);
+      });
+    });
+    actionsGroup.appendChild(btnCopy);
+
+    // Clear button
+    const btnClear = document.createElement('button');
+    btnClear.type = 'button';
+    btnClear.className = 'py-1.5 px-2.5 border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-lg transition-all';
+    btnClear.textContent = labels.btnClear;
+    btnClear.addEventListener('click', () => {
+      textarea.value = '';
+      updateCounters('');
+      triggerClipboardChange(item.id, '');
+    });
+    actionsGroup.appendChild(btnClear);
+
+    // Delete button (Only for Clipboards > 1, never Clipboard 1)
+    if (item.id !== 'clip-1') {
+      const btnDelete = document.createElement('button');
+      btnDelete.type = 'button';
+      btnDelete.className = 'py-1.5 px-2 text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400 text-xs font-medium rounded transition-colors flex items-center gap-1';
+      btnDelete.title = labels.deleteBtn;
+      btnDelete.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>';
+      btnDelete.addEventListener('click', () => {
+        deleteClipboard(item.id);
+      });
+      actionsGroup.appendChild(btnDelete);
+    }
+
+    header.appendChild(actionsGroup);
+    card.appendChild(header);
+
+    // Textarea (pure text, native XSS-safe .value)
+    const textarea = document.createElement('textarea');
+    textarea.id = `textarea-${item.id}`;
+    textarea.className = 'w-full h-44 md:h-52 p-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-amber-500 outline-none resize-y text-slate-900 dark:text-white leading-relaxed font-sans text-sm md:text-base';
+    textarea.placeholder = labels.placeholderTextarea;
+    textarea.value = item.content || '';
+
+    // Footer with Counters
+    const footer = document.createElement('div');
+    footer.className = 'flex justify-between text-xs text-slate-500 dark:text-slate-400 px-1';
+
+    const wordsEl = document.createElement('span');
+    wordsEl.id = `words-${item.id}`;
+    wordsEl.textContent = `${labels.words}: 0`;
+
+    const charsEl = document.createElement('span');
+    charsEl.id = `chars-${item.id}`;
+    charsEl.textContent = `${labels.chars}: 0 / 20,000`;
+
+    footer.appendChild(wordsEl);
+    footer.appendChild(charsEl);
+
+    const updateCounters = (val: string) => {
+      charsEl.textContent = `${labels.chars}: ${val.length} / 20,000`;
+      const wCount = (val.match(/\S+/g) || []).length;
+      wordsEl.textContent = `${labels.words}: ${wCount}`;
+    };
+
+    updateCounters(item.content || '');
+
+    // Input listener for this specific clipboard
+    textarea.addEventListener('input', () => {
+      let val = textarea.value;
+      if (val.length > 20000) {
+        showBannerMessage(labels.errorLength);
+        val = val.slice(0, 20000);
+        textarea.value = val;
+      } else {
+        showBannerMessage('');
+      }
+
+      updateCounters(val);
+      triggerClipboardChange(item.id, val);
+    });
+
+    // Save immediately on blur
+    textarea.addEventListener('blur', () => {
+      saveClipboardToDb(item.id, textarea.value);
+    });
+
+    card.appendChild(textarea);
+    card.appendChild(footer);
+
+    return card;
+  };
+
+  // Render all active clipboards
+  const renderClipboards = () => {
+    clipboardsList.innerHTML = '';
+    clipboards.forEach((item, index) => {
+      const card = createClipboardCard(item, index);
+      clipboardsList.appendChild(card);
+    });
+    updateAddButtonState();
+  };
+
+  // Handle local text changes with throttled broadcast and debounced persistence
+  const triggerClipboardChange = (clipboardId: string, text: string) => {
+    // Update local state
+    const item = clipboards.find(c => c.id === clipboardId);
+    if (item) {
+      item.content = text;
+      item.updatedAt = Date.now();
+    }
+
+    // Throttled Realtime Broadcast (40ms)
+    if (currentChannel && currentChannel.state === 'joined') {
+      const existingTimer = broadcastTimers.get(clipboardId);
+      if (existingTimer) clearTimeout(existingTimer);
+
+      const timer = setTimeout(() => {
+        currentChannel?.send({
+          type: 'broadcast',
+          event: 'clipboard-update',
+          payload: {
+            clipboardId,
+            text,
+            senderId: deviceId,
+            updatedAt: Date.now()
+          }
+        });
+      }, 40);
+      broadcastTimers.set(clipboardId, timer);
+    }
+
+    // Debounced Database Persistence (1200ms)
+    const existingSave = saveTimers.get(clipboardId);
+    if (existingSave) clearTimeout(existingSave);
+
+    const sTimer = setTimeout(() => {
+      saveClipboardToDb(clipboardId, text);
+    }, 1200);
+    saveTimers.set(clipboardId, sTimer);
+  };
+
+  // Database save for a specific clipboard
+  const saveClipboardToDb = async (clipboardId: string, content: string) => {
+    if (!sessionId || !currentCode) return;
+    setSyncBadge('saving');
+
+    try {
+      const res = await fetch('/api/live/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: currentCode,
+          sessionId,
+          clipboardId,
+          content,
+          updatedAt: Date.now()
+        })
+      });
+
+      if (res.ok) {
+        setSyncBadge('saved');
+      } else {
+        setSyncBadge('synced');
+      }
+    } catch {
+      setSyncBadge('synced');
+    }
+  };
+
+  // Add a new clipboard (max 4)
+  const addOneMoreClipboard = async () => {
+    if (clipboards.length >= 4) return;
+
+    const nextIndex = clipboards.length + 1;
+    const newId = `clip-${Date.now()}`;
+    const newTitle = `${labels.clipboardTitle} ${nextIndex}`;
+
+    const newClip: LiveClipboardItem = {
+      id: newId,
+      title: newTitle,
+      content: '',
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+
+    clipboards.push(newClip);
+    renderClipboards();
+
+    // Broadcast creation to connected devices
+    if (currentChannel && currentChannel.state === 'joined') {
+      currentChannel.send({
+        type: 'broadcast',
+        event: 'clipboard-add',
+        payload: {
+          clipboard: newClip,
+          senderId: deviceId
+        }
+      });
+    }
+
+    // Persist addition
+    try {
+      await fetch('/api/live/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: currentCode,
+          sessionId,
+          action: 'add',
+          clipboard: newClip
+        })
+      });
+    } catch {
+      // Non-critical, recovered on reconnect
+    }
+  };
+
+  btnAddClipboard.addEventListener('click', addOneMoreClipboard);
+
+  // Delete a clipboard (only allowed for clipboards > 1)
+  const deleteClipboard = async (clipboardId: string) => {
+    if (clipboardId === 'clip-1') return; // Clipboard 1 protected
+
+    clipboards = clipboards.filter(c => c.id !== clipboardId);
+    renderClipboards();
+
+    // Broadcast deletion
+    if (currentChannel && currentChannel.state === 'joined') {
+      currentChannel.send({
+        type: 'broadcast',
+        event: 'clipboard-delete',
+        payload: {
+          clipboardId,
+          senderId: deviceId
+        }
+      });
+    }
+
+    // Persist deletion
+    try {
+      await fetch('/api/live/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: currentCode,
+          sessionId,
+          action: 'delete',
+          clipboardId
+        })
+      });
+    } catch {
+      // Handled on reconnect
+    }
+  };
+
+  // Show active session UI
+  const showActiveSession = (code: string, items: LiveClipboardItem[]) => {
+    stateIdle.classList.add('hidden');
+    stateActive.classList.remove('hidden');
+    activeCodeDisplay.textContent = `${code.slice(0, 3)} ${code.slice(3, 6)}`;
+    tipText.textContent = labels.tipInstructions.replace('{code}', `${code.slice(0, 3)} ${code.slice(3, 6)}`);
+
+    clipboards = items;
+    renderClipboards();
+
+    // Generate scalable SVG QR code for the session link
+    const sessionLink = `${window.location.origin}${window.location.pathname}?code=${code}`;
+    QRCode.toString(sessionLink, {
+      type: 'svg',
+      margin: 1,
+      color: { dark: '#0f172a', light: '#ffffff' }
+    }).then((svg) => {
+      if (liveQrThumb) liveQrThumb.innerHTML = svg;
+      if (liveQrModalCode) liveQrModalCode.innerHTML = svg;
+    }).catch(console.error);
+
+    if (liveQrModalLink) {
+      liveQrModalLink.textContent = sessionLink;
+    }
+
+    // Update browser URL query param without reload
+    const url = new URL(window.location.href);
+    url.searchParams.set('code', code);
+    window.history.replaceState({}, '', url.toString());
+  };
+
+  const showIdleScreen = () => {
+    stateActive.classList.add('hidden');
+    stateIdle.classList.remove('hidden');
+    currentCode = '';
+    sessionId = '';
+    clipboards = [];
+    clipboardsList.innerHTML = '';
+    inputJoinCode.value = '';
+    showBannerMessage('');
+
+    if (liveQrThumb) liveQrThumb.innerHTML = '';
+    if (liveQrModalCode) liveQrModalCode.innerHTML = '';
+    if (liveQrModal) liveQrModal.classList.add('hidden');
+
+    if (currentChannel) {
+      supabase.removeChannel(currentChannel);
+      currentChannel = null;
+    }
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete('code');
+    window.history.replaceState({}, '', url.toString());
+  };
+
+  // Single Realtime Channel per session
+  const setupRealtimeChannel = async (targetSessionId: string) => {
+    if (currentChannel) {
+      await supabase.removeChannel(currentChannel);
+      currentChannel = null;
+    }
+
+    setConnectionState('connecting');
+
+    const channel = supabase.channel(`live_${targetSessionId}`, {
+      config: {
+        broadcast: { ack: false, self: false }
+      }
+    });
+
+    // 1. Listen for targeted clipboard text updates
+    channel.on('broadcast', { event: 'clipboard-update' }, (response: {
+      payload: {
+        clipboardId?: string;
+        text?: string;
+        senderId?: string;
+        updatedAt?: number;
+      }
+    }) => {
+      const data = response.payload;
+      if (!data || data.senderId === deviceId || !data.clipboardId) return;
+
+      const remoteText = data.text ?? '';
+      const targetTextarea = document.getElementById(`textarea-${data.clipboardId}`) as HTMLTextAreaElement | null;
+      const pulseEl = document.getElementById(`pulse-${data.clipboardId}`) as HTMLSpanElement | null;
+
+      // Update local array item
+      const item = clipboards.find(c => c.id === data.clipboardId);
+      if (item) {
+        item.content = remoteText;
+        if (typeof data.updatedAt === 'number') {
+          item.updatedAt = data.updatedAt;
+        }
+      }
+
+      if (targetTextarea) {
+        // Last-update-wins: update textarea
+        targetTextarea.value = remoteText;
+
+        // Update word/char counts
+        const wordsEl = document.getElementById(`words-${data.clipboardId}`);
+        const charsEl = document.getElementById(`chars-${data.clipboardId}`);
+        if (wordsEl && charsEl) {
+          charsEl.textContent = `${labels.chars}: ${remoteText.length} / 20,000`;
+          wordsEl.textContent = `${labels.words}: ${(remoteText.match(/\S+/g) || []).length}`;
+        }
+      }
+
+      // Flash remote pulse indicator on this specific card
+      if (pulseEl) {
+        pulseEl.classList.remove('opacity-0');
+        const existingPulse = pulseTimers.get(data.clipboardId);
+        if (existingPulse) clearTimeout(existingPulse);
+        const pTimer = setTimeout(() => pulseEl.classList.add('opacity-0'), 1500);
+        pulseTimers.set(data.clipboardId, pTimer);
+      }
+    });
+
+    // 2. Listen for clipboard additions from connected device
+    channel.on('broadcast', { event: 'clipboard-add' }, (response: {
+      payload: {
+        clipboard?: LiveClipboardItem;
+        senderId?: string;
+      }
+    }) => {
+      const data = response.payload;
+      if (!data || data.senderId === deviceId || !data.clipboard) return;
+
+      if (!clipboards.some(c => c.id === data.clipboard?.id) && clipboards.length < 4) {
+        clipboards.push(data.clipboard);
+        renderClipboards();
+      }
+    });
+
+    // 3. Listen for clipboard deletions from connected device
+    channel.on('broadcast', { event: 'clipboard-delete' }, (response: {
+      payload: {
+        clipboardId?: string;
+        senderId?: string;
+      }
+    }) => {
+      const data = response.payload;
+      if (!data || data.senderId === deviceId || !data.clipboardId) return;
+
+      if (data.clipboardId !== 'clip-1') {
+        clipboards = clipboards.filter(c => c.id !== data.clipboardId);
+        renderClipboards();
+      }
+    });
+
+    // Channel subscription state
+    channel.subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        setConnectionState('connected');
+      } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+        setConnectionState('reconnecting');
+      }
+    });
+
+    currentChannel = channel;
+  };
+
+  // Reconnection and State Recovery
+  const checkAndRecoverState = async (_reason: string) => {
+    if (!sessionId || !currentCode) return;
+
+    // Check if channel is not subscribed, reconnect
+    if (!currentChannel || currentChannel.state !== 'joined') {
+      await setupRealtimeChannel(sessionId);
+    }
+
+    // Recover latest server state
+    try {
+      const res = await fetch(`/api/live/get?code=${encodeURIComponent(currentCode)}&sessionId=${encodeURIComponent(sessionId)}`);
+      if (res.ok) {
+        const data = await res.json() as { clipboards?: LiveClipboardItem[] };
+        if (Array.isArray(data.clipboards) && data.clipboards.length > 0) {
+          clipboards = data.clipboards;
+          renderClipboards();
+        }
+      }
+    } catch {
+      // Re-fetch failed, ignore until next attempt
+    }
+  };
+
+  // Start new session
+  btnStart.addEventListener('click', async () => {
+    if (isConnecting) return;
+    isConnecting = true;
+    btnStart.disabled = true;
+    txtStart.textContent = labels.btnStarting;
+    showBannerMessage('');
+
+    try {
+      const res = await fetch('/api/live/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: '' })
+      });
+      const data = await res.json() as {
+        success?: boolean;
+        code?: string;
+        sessionId?: string;
+        clipboards?: LiveClipboardItem[];
+        error?: string;
+      };
+
+      if (res.ok && data.success && data.code && data.sessionId) {
+        currentCode = data.code;
+        sessionId = data.sessionId;
+        const initialList = Array.isArray(data.clipboards) && data.clipboards.length > 0
+          ? data.clipboards
+          : [{ id: 'clip-1', title: `${labels.clipboardTitle} 1`, content: '', createdAt: Date.now(), updatedAt: Date.now() }];
+
+        showActiveSession(currentCode, initialList);
+        await setupRealtimeChannel(sessionId);
+      } else {
+        showBannerMessage(data.error || labels.errorGeneric);
+      }
+    } catch {
+      showBannerMessage(labels.errorGeneric);
+    } finally {
+      isConnecting = false;
+      btnStart.disabled = false;
+      txtStart.textContent = labels.btnStart;
+    }
+  });
+
+  // Join existing session
+  const performJoin = async (codeToJoin: string) => {
+    const clean = codeToJoin.trim().replace(/[-\s]/g, '');
+    if (!/^\d{6}$/.test(clean)) {
+      showBannerMessage(labels.joinPlaceholder);
+      return;
+    }
+
+    if (isConnecting) return;
+    isConnecting = true;
+    btnJoin.disabled = true;
+    txtJoin.textContent = labels.btnJoining;
+    showBannerMessage('');
+
+    try {
+      const res = await fetch('/api/live/join', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: clean })
+      });
+      const data = await res.json() as {
+        success?: boolean;
+        code?: string;
+        sessionId?: string;
+        clipboards?: LiveClipboardItem[];
+        content?: string;
+        error?: string;
+      };
+
+      if (res.ok && data.success && data.code && data.sessionId) {
+        currentCode = data.code;
+        sessionId = data.sessionId;
+        const initialList = Array.isArray(data.clipboards) && data.clipboards.length > 0
+          ? data.clipboards
+          : [{ id: 'clip-1', title: `${labels.clipboardTitle} 1`, content: data.content ?? '', createdAt: Date.now(), updatedAt: Date.now() }];
+
+        showActiveSession(currentCode, initialList);
+        await setupRealtimeChannel(sessionId);
+      } else {
+        showBannerMessage(data.error || labels.errorNotFound);
+      }
+    } catch {
+      showBannerMessage(labels.errorGeneric);
+    } finally {
+      isConnecting = false;
+      btnJoin.disabled = false;
+      txtJoin.textContent = labels.btnJoin;
+    }
+  };
+
+  btnJoin.addEventListener('click', () => performJoin(inputJoinCode.value));
+  inputJoinCode.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      performJoin(inputJoinCode.value);
+    }
+  });
+
+  // Copy code button
+  btnCopyCode.addEventListener('click', () => {
+    if (!currentCode) return;
+    navigator.clipboard.writeText(currentCode).then(() => {
+      const orig = txtCopyCode.textContent;
+      txtCopyCode.textContent = labels.codeCopied;
+      setTimeout(() => { txtCopyCode.textContent = orig; }, 2000);
+    });
+  });
+
+  // Copy share link button
+  btnCopyLink.addEventListener('click', () => {
+    if (!currentCode) return;
+    const link = `${window.location.origin}${window.location.pathname}?code=${currentCode}`;
+    navigator.clipboard.writeText(link).then(() => {
+      const orig = txtCopyLink.textContent;
+      txtCopyLink.textContent = labels.linkCopied;
+      setTimeout(() => { txtCopyLink.textContent = orig; }, 2000);
+    });
+  });
+
+  // Copy text button (Top bar)
+  btnCopyTextTop?.addEventListener('click', () => {
+    const firstTextarea = document.querySelector('#clipboards-list textarea') as HTMLTextAreaElement | null;
+    const textToCopy = firstTextarea ? firstTextarea.value : (clipboards[0]?.content || '');
+    if (!textToCopy) {
+      showBannerMessage('No text to copy yet.', false);
+      setTimeout(() => showBannerMessage(''), 2500);
+      return;
+    }
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      const orig = txtCopyTextTop ? txtCopyTextTop.textContent : labels.btnCopyText;
+      if (txtCopyTextTop) txtCopyTextTop.textContent = labels.btnCopiedText;
+      setTimeout(() => {
+        if (txtCopyTextTop) txtCopyTextTop.textContent = orig;
+      }, 2000);
+    });
+  });
+
+  // QR Modal controls
+  const openQrModal = () => {
+    if (liveQrModal) liveQrModal.classList.remove('hidden');
+  };
+  const closeQrModal = () => {
+    if (liveQrModal) liveQrModal.classList.add('hidden');
+  };
+
+  btnOpenLiveQr?.addEventListener('click', openQrModal);
+  btnOpenLiveQrBtn?.addEventListener('click', openQrModal);
+  btnCloseLiveQrModal?.addEventListener('click', closeQrModal);
+  btnLiveModalClose?.addEventListener('click', closeQrModal);
+  liveQrModal?.addEventListener('click', (e) => {
+    if (e.target === liveQrModal) closeQrModal();
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && liveQrModal && !liveQrModal.classList.contains('hidden')) {
+      closeQrModal();
+    }
+  });
+
+  btnLiveModalCopyLink?.addEventListener('click', () => {
+    if (!currentCode) return;
+    const link = `${window.location.origin}${window.location.pathname}?code=${currentCode}`;
+    navigator.clipboard.writeText(link).then(() => {
+      const orig = btnLiveModalCopyLink.textContent;
+      btnLiveModalCopyLink.textContent = labels.linkCopied;
+      setTimeout(() => { btnLiveModalCopyLink.textContent = orig; }, 2000);
+    });
+  });
+
+  // Leave session
+  btnLeave.addEventListener('click', () => {
+    showIdleScreen();
+  });
+
+  // Manual reconnect
+  btnReconnect.addEventListener('click', () => {
+    checkAndRecoverState('manual');
+  });
+
+  // Network & Lifecycle listeners for resilience
+  window.addEventListener('online', () => {
+    checkAndRecoverState('online');
+  });
+
+  window.addEventListener('offline', () => {
+    setConnectionState('disconnected');
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      checkAndRecoverState('visibilitychange');
+    }
+  });
+
+  // Auto-connect if ?code= is present in URL
+  const initialCode = new URLSearchParams(window.location.search).get('code');
+  if (initialCode && /^\d{6}$/.test(initialCode.trim().replace(/[-\s]/g, ''))) {
+    performJoin(initialCode);
+  }
+</script>

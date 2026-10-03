@@ -16,7 +16,8 @@
   },
   "vars": {
     "PUBLIC_SITE_URL": "https://onlinecopypaste.com",
-    "PUBLIC_SUPABASE_URL": "https://kyzdjurxksqmyyeccbad.supabase.co"
+    "PUBLIC_SUPABASE_URL": "https://kyzdjurxksqmyyeccbad.supabase.co",
+    "PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5emRqdXJ4a3NxbXl5ZWNjYmFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0NTMxMzksImV4cCI6MjEwNDAyOTEzOX0.7gNIX7PLoVhtps1EHnacSGltW_idjhLRVbSLMdMoOW0"
   },
   "observability": {
     "enabled": true

@@ -1,219 +1,1248 @@
 ---
+interface Props {
+  lang?: string;
+}
+
+const { lang = "en" } = Astro.props;
+
+const liveRoutes: Record<string, { href: string; label: string }> = {
+  en: {
+    href: "/live",
+    label: "Live Clipboard – Sync Between Devices in Real Time",
+  },
+  es: {
+    href: "/es/live",
+    label: "Portapapeles en vivo – Sincronización en tiempo real",
+  },
+  ja: {
+    href: "/ja/live",
+    label: "ライブクリップボード – デバイス間リアルタイム同期",
+  },
+  fr: {
+    href: "/fr/live",
+    label: "Presse-papiers en direct – Synchronisation en temps réel",
+  },
+  de: {
+    href: "/de/live",
+    label: "Live-Zwischenablage – Echtzeit-Synchronisation zwischen Geräten",
+  },
+  pt: {
+    href: "/pt/live",
+    label: "Área de transferência ao vivo – Sincronização em tempo real",
+  },
+  ko: { href: "/ko/live", label: "라이브 클립보드 – 기기 간 실시간 동기화" },
+  it: {
+    href: "/it/live",
+    label: "Appunti live – Sincronizzazione in tempo reale tra dispositivi",
+  },
+};
+
+const liveInfo = liveRoutes[lang] || liveRoutes.en;
+
+const t: Record<
+  string,
+  {
+    pasteTitle: string;
+    placeholder: string;
+    words: string;
+    chars: string;
+    btnGenerate: string;
+    btnGenerating: string;
+    orRetrieve: string;
+    codePlaceholder: string;
+    btnRetrieve: string;
+    btnRetrieving: string;
+    sessionCodeLabel: string;
+    codeTitle: string;
+    codeDesc: string;
+    expiresIn: string;
+    copyCode: string;
+    codeCopied: string;
+    copyLink: string;
+    linkCopied: string;
+    copyText: string;
+    textCopied: string;
+    startOver: string;
+    resultTitle: string;
+    transferAnother: string;
+    qrCode: string;
+    scanQrCode: string;
+    qrModalTitle: string;
+    qrModalSubtitle: string;
+    close: string;
+    errorEmpty: string;
+    errorLength: string;
+    errorInvalidCode: string;
+    errorGeneric: string;
+  }
+> = {
+  en: {
+    pasteTitle: "Paste your text",
+    placeholder:
+      "Paste text, links, notes, code, or anything else you want to transfer...",
+    words: "Words",
+    chars: "Characters",
+    btnGenerate: "Generate Code",
+    btnGenerating: "Generating Code...",
+    orRetrieve: "Or retrieve with code",
+    codePlaceholder: "Enter 6-digit code",
+    btnRetrieve: "Get Text",
+    btnRetrieving: "Retrieving...",
+    sessionCodeLabel: "Transfer Code",
+    codeTitle: "Your Transfer Code",
+    codeDesc:
+      "Enter this code on your other device or scan the QR code to retrieve your text.",
+    expiresIn: "Expires in 10 minutes",
+    copyCode: "Copy Code",
+    codeCopied: "Copied!",
+    copyLink: "Copy Link",
+    linkCopied: "Link Copied!",
+    copyText: "Copy Text",
+    textCopied: "Text Copied!",
+    startOver: "Transfer Another",
+    resultTitle: "Text Ready to Copy",
+    transferAnother: "Transfer Another",
+    qrCode: "QR Code",
+    scanQrCode: "Scan with phone camera",
+    qrModalTitle: "Scan QR to Retrieve Text",
+    qrModalSubtitle:
+      "Point your phone camera to open and copy your text instantly.",
+    close: "Close",
+    errorEmpty: "Please paste some text first.",
+    errorLength: "Text is too long (Max 20,000 chars).",
+    errorInvalidCode: "Please enter a valid 6-digit code.",
+    errorGeneric: "Network error. Please try again.",
+  },
+  es: {
+    pasteTitle: "Pega tu texto",
+    placeholder:
+      "Pega texto, enlaces, notas, código o cualquier otra cosa que quieras transferir...",
+    words: "Palabras",
+    chars: "Caracteres",
+    btnGenerate: "Generar código",
+    btnGenerating: "Generando código...",
+    orRetrieve: "O recupera con un código",
+    codePlaceholder: "Código de 6 dígitos",
+    btnRetrieve: "Obtener texto",
+    btnRetrieving: "Recuperando...",
+    sessionCodeLabel: "Código de transferencia",
+    codeTitle: "Tu código de transferencia",
+    codeDesc:
+      "Introduce este código en tu otro dispositivo o escanea el QR para obtener el texto.",
+    expiresIn: "Caduca en 10 minutos",
+    copyCode: "Copiar código",
+    codeCopied: "¡Copiado!",
+    copyLink: "Copiar enlace",
+    linkCopied: "¡Enlace copiado!",
+    copyText: "Copiar texto",
+    textCopied: "¡Texto copiado!",
+    startOver: "Empezar de nuevo",
+    resultTitle: "Texto listo para copiar",
+    transferAnother: "Transferir otro",
+    qrCode: "Código QR",
+    scanQrCode: "Escanear con cámara",
+    qrModalTitle: "Escanear código QR para obtener texto",
+    qrModalSubtitle:
+      "Apunta con la cámara de tu móvil para abrir y copiar tu texto al instante.",
+    close: "Cerrar",
+    errorEmpty: "Por favor, pega algo de texto primero.",
+    errorLength: "El texto supera el límite de 20.000 caracteres.",
+    errorInvalidCode: "Introduce un código válido de 6 dígitos.",
+    errorGeneric: "Error de red. Inténtalo de nuevo.",
+  },
+  ja: {
+    pasteTitle: "テキストを貼り付け",
+    placeholder: "テキスト、リンク、メモ、コードなどを貼り付けて転送...",
+    words: "単語数",
+    chars: "文字数",
+    btnGenerate: "コードを生成",
+    btnGenerating: "コード生成中...",
+    orRetrieve: "またはコードでテキストを受信",
+    codePlaceholder: "6桁のコードを入力",
+    btnRetrieve: "テキストを受信",
+    btnRetrieving: "受信中...",
+    sessionCodeLabel: "転送コード",
+    codeTitle: "あなたの転送コード",
+    codeDesc:
+      "別のデバイスでこのコードを入力するか、QRコードをスキャンしてテキストを受信します。",
+    expiresIn: "10分で有効期限切れ",
+    copyCode: "コードをコピー",
+    codeCopied: "コピー完了！",
+    copyLink: "リンクをコピー",
+    linkCopied: "リンクをコピー！",
+    copyText: "テキストをコピー",
+    textCopied: "テキストをコピーしました！",
+    startOver: "やり直す",
+    resultTitle: "コピー可能なテキスト",
+    transferAnother: "別のテキストを転送",
+    qrCode: "QRコード",
+    scanQrCode: "スマホのカメラでスキャン",
+    qrModalTitle: "QRコードをスキャンして受信",
+    qrModalSubtitle:
+      "スマートフォンのカメラで読み取って即座にテキストを開きコピーできます。",
+    close: "閉じる",
+    errorEmpty: "まずテキストを貼り付けてください。",
+    errorLength: "文字数が上限（20,000文字）を超えています。",
+    errorInvalidCode: "有効な6桁のコードを入力してください。",
+    errorGeneric: "ネットワークエラーが発生しました。再試行してください。",
+  },
+  fr: {
+    pasteTitle: "Collez votre texte",
+    placeholder:
+      "Collez du texte, des liens, des notes, du code à transférer...",
+    words: "Mots",
+    chars: "Caractères",
+    btnGenerate: "Générer un code",
+    btnGenerating: "Génération...",
+    orRetrieve: "Ou récupérer avec un code",
+    codePlaceholder: "Code à 6 chiffres",
+    btnRetrieve: "Récupérer le texte",
+    btnRetrieving: "Récupération...",
+    sessionCodeLabel: "Code de transfert",
+    codeTitle: "Votre code de transfert",
+    codeDesc:
+      "Entrez ce code sur votre autre appareil ou scannez le QR code pour récupérer le texte.",
+    expiresIn: "Expire dans 10 minutes",
+    copyCode: "Copier le code",
+    codeCopied: "Copié !",
+    copyLink: "Copier le lien",
+    linkCopied: "Lien copié !",
+    copyText: "Copier le texte",
+    textCopied: "Texte copié !",
+    startOver: "Recommencer",
+    resultTitle: "Texte prêt à être copié",
+    transferAnother: "Transférer un autre",
+    qrCode: "Code QR",
+    scanQrCode: "Scanner avec le téléphone",
+    qrModalTitle: "Scanner le QR pour récupérer le texte",
+    qrModalSubtitle:
+      "Pointez votre appareil photo pour ouvrir et copier votre texte instantanément.",
+    close: "Fermer",
+    errorEmpty: "Veuillez coller du texte d’abord.",
+    errorLength: "Le texte dépasse la limite de 20 000 caractères.",
+    errorInvalidCode: "Veuillez entrer un code valide à 6 chiffres.",
+    errorGeneric: "Erreur réseau. Veuillez réessayer.",
+  },
+  de: {
+    pasteTitle: "Text einfügen",
+    placeholder:
+      "Fügen Sie Text, Links, Notizen oder Code ein, den Sie übertragen möchten...",
+    words: "Wörter",
+    chars: "Zeichen",
+    btnGenerate: "Code generieren",
+    btnGenerating: "Generiere Code...",
+    orRetrieve: "Oder mit Code abrufen",
+    codePlaceholder: "6-stelligen Code eingeben",
+    btnRetrieve: "Text abrufen",
+    btnRetrieving: "Lade Text...",
+    sessionCodeLabel: "Übertragungscode",
+    codeTitle: "Ihr Übertragungscode",
+    codeDesc:
+      "Geben Sie diesen Code auf Ihrem anderen Gerät ein oder scannen Sie den QR-Code.",
+    expiresIn: "Läuft in 10 Minuten ab",
+    copyCode: "Code kopieren",
+    codeCopied: "Kopiert!",
+    copyLink: "Link kopieren",
+    linkCopied: "Link kopiert!",
+    copyText: "Text kopieren",
+    textCopied: "Text kopiert!",
+    startOver: "Neu starten",
+    resultTitle: "Text bereit zum Kopieren",
+    transferAnother: "Weiteren Text übertragen",
+    qrCode: "QR-Code",
+    scanQrCode: "Mit Smartphone scannen",
+    qrModalTitle: "QR-Code scannen zum Abrufen",
+    qrModalSubtitle:
+      "Scannen Sie den Code mit der Kamera, um den Text sofort zu öffnen und zu kopieren.",
+    close: "Schließen",
+    errorEmpty: "Bitte fügen Sie zuerst Text ein.",
+    errorLength: "Text überschreitet das Maximum von 20.000 Zeichen.",
+    errorInvalidCode: "Bitte geben Sie einen gültigen 6-stelligen Code ein.",
+    errorGeneric: "Netzwerkfehler. Bitte versuchen Sie es erneut.",
+  },
+  pt: {
+    pasteTitle: "Cole seu texto",
+    placeholder:
+      "Cole texto, links, notas, código ou qualquer coisa que queira transferir...",
+    words: "Palabras",
+    chars: "Caracteres",
+    btnGenerate: "Gerar código",
+    btnGenerating: "Gerando código...",
+    orRetrieve: "Ou recuperar com um código",
+    codePlaceholder: "Código de 6 dígitos",
+    btnRetrieve: "Obter texto",
+    btnRetrieving: "Obtendo...",
+    sessionCodeLabel: "Código de transferência",
+    codeTitle: "Seu código de transferência",
+    codeDesc:
+      "Digite este código no outro dispositivo ou escaneie o código QR para obter o texto.",
+    expiresIn: "Expira em 10 minutos",
+    copyCode: "Copiar código",
+    codeCopied: "Copiado!",
+    copyLink: "Copiar link",
+    linkCopied: "Link copiado!",
+    copyText: "Copiar texto",
+    textCopied: "Texto copiado!",
+    startOver: "Recomeçar",
+    resultTitle: "Texto pronto para copiar",
+    transferAnother: "Transferir outro",
+    qrCode: "Código QR",
+    scanQrCode: "Escanear com o celular",
+    qrModalTitle: "Escanear QR para obter texto",
+    qrModalSubtitle:
+      "Aponte a câmera do seu celular para abrir e copiar seu texto instantaneamente.",
+    close: "Fechar",
+    errorEmpty: "Por favor, cole um texto primeiro.",
+    errorLength: "O texto excede o limite máximo de 20.000 caracteres.",
+    errorInvalidCode: "Digite um código válido de 6 dígitos.",
+    errorGeneric: "Erro de rede. Tente novamente.",
+  },
+  ko: {
+    pasteTitle: "텍스트 붙여넣기",
+    placeholder: "전송할 텍스트, 링크, 메모, 코드 등을 붙여넣으세요...",
+    words: "단어 수",
+    chars: "글자 수",
+    btnGenerate: "코드 생성",
+    btnGenerating: "코드 생성 중...",
+    orRetrieve: "또는 코드로 텍스트 가져오기",
+    codePlaceholder: "6자리 코드 입력",
+    btnRetrieve: "텍스트 가져오기",
+    btnRetrieving: "가져오는 중...",
+    sessionCodeLabel: "전송 코드",
+    codeTitle: "전송 코드",
+    codeDesc:
+      "다른 기기에서 이 코드를 입력하거나 QR 코드를 스캔하여 텍스트를 가져오세요.",
+    expiresIn: "10분 후 만료",
+    copyCode: "코드 복사",
+    codeCopied: "복사 완료!",
+    copyLink: "링크 복사",
+    linkCopied: "링크 복사 완료!",
+    copyText: "텍스트 복사",
+    textCopied: "텍스트 복사 완료!",
+    startOver: "처음으로",
+    resultTitle: "복사할 준비가 된 텍스트",
+    transferAnother: "다른 텍스트 전송",
+    qrCode: "QR 코드",
+    scanQrCode: "휴대폰 카메라로 스캔",
+    qrModalTitle: "QR 코드로 텍스트 가져오기",
+    qrModalSubtitle:
+      "스마트폰 카메라로 스캔하여 즉시 텍스트를 열고 복사하세요.",
+    close: "닫기",
+    errorEmpty: "먼저 텍스트를 붙여넣어 주세요.",
+    errorLength: "텍스트가 최대 20,000자를 초과했습니다.",
+    errorInvalidCode: "유효한 6자리 코드를 입력해 주세요.",
+    errorGeneric: "네트워크 오류가 발생했습니다. 다시 시도해 주세요.",
+  },
+  it: {
+    pasteTitle: "Incolla il tuo testo",
+    placeholder:
+      "Incolla testo, link, note, codice o qualsiasi cosa tu voglia trasferire...",
+    words: "Parole",
+    chars: "Caratteri",
+    btnGenerate: "Genera codice",
+    btnGenerating: "Generazione in corso...",
+    orRetrieve: "Oppure recupera con un codice",
+    codePlaceholder: "Codice a 6 cifre",
+    btnRetrieve: "Ottieni testo",
+    btnRetrieving: "Recupero in corso...",
+    sessionCodeLabel: "Codice di trasferimento",
+    codeTitle: "Il tuo codice di trasferimento",
+    codeDesc:
+      "Inserisci questo codice sul tuo altro dispositivo o scansiona il codice QR.",
+    expiresIn: "Scade tra 10 minuti",
+    copyCode: "Copia codice",
+    codeCopied: "Copiato!",
+    copyLink: "Copia link",
+    linkCopied: "Link copiato!",
+    copyText: "Copia testo",
+    textCopied: "Testo copiato!",
+    startOver: "Ricomincia",
+    resultTitle: "Testo pronto da copiare",
+    transferAnother: "Trasferisci un altro",
+    qrCode: "Codice QR",
+    scanQrCode: "Scansiona con il telefono",
+    qrModalTitle: "Scansiona QR per recuperare il testo",
+    qrModalSubtitle:
+      "Inquadra con la fotocamera per aprire e copiare subito il tuo testo.",
+    close: "Chiudi",
+    errorEmpty: "Incolla del testo prima.",
+    errorLength: "Il testo supera la lunghezza massima di 20.000 caratteri.",
+    errorInvalidCode: "Inserisci un codice valido a 6 cifre.",
+    errorGeneric: "Errore di rede. Riprova.",
+  },
+};
+
+const labels = t[lang] || t.en;
 ---
-<div class="max-w-3xl mx-auto w-full bg-white/90 dark:bg-slate-800/90 rounded-2xl shadow-xl p-5 md:p-6 border border-slate-200 dark:border-slate-700 mt-3">
-  
 
+<div
+  id="standard-tool-container"
+  class="max-w-3xl mx-auto w-full bg-white/90 dark:bg-slate-800/90 rounded-2xl shadow-xl p-5 md:p-6 border border-slate-200 dark:border-slate-700 mt-3 text-left transition-all"
+  data-labels={JSON.stringify(labels)}
+>
+  <!-- Global status message -->
+  <div
+    id="status-message"
+    class="mb-4 p-3 rounded-lg hidden-state text-sm font-medium"
+  >
+  </div>
 
-  <div id="state-paste" class="">
-    <div class="flex flex-col sm:flex-row sm:justify-between justify-center  sm:items-center gap-3 mb-3">
-      <h2 class="text-xl  font-semibold text-slate-900 dark:text-white">Paste your text</h2>
-      
-      <button id="btn-show-receive" class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-amber-700 bg-amber-50 border border-amber-200 hover:bg-amber-100 dark:text-amber-300 dark:bg-amber-900/30 dark:border-amber-800 dark:hover:bg-amber-900/50 rounded-xl transition-all w-full sm:w-auto shadow-sm active:scale-95">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
-        </svg>
-        Have a code? Enter it here
-      </button>
+  <!-- STATE: PASTE & CODE INPUT (Unified Screen like Live Clipboard) -->
+  <div id="state-paste" class="space-y-5">
+    <div class="flex items-center justify-between gap-3">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white">
+        {labels.pasteTitle}
+      </h2>
     </div>
-    
-    <textarea id="text-input" class="w-full h-52 md:h-60 p-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-amber-500 outline-none resize-y mb-2" placeholder="Paste text, links, notes, code, or anything else you want to transfer..."></textarea>
-    
-    <div class="flex justify-between text-sm text-slate-500 mb-6">
-      <span>Words: <span id="word-count">0</span></span>
-      <span>Characters: <span id="char-count">0</span></span>
+
+    <textarea
+      id="text-input"
+      class="w-full h-48 md:h-56 p-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 outline-none resize-y text-sm md:text-base leading-relaxed"
+      placeholder={labels.placeholder}></textarea>
+
+    <div
+      class="flex justify-between text-xs text-slate-500 dark:text-slate-400 px-1 -mt-2"
+    >
+      <span
+        >{labels.words}: <span id="word-count" class="font-semibold">0</span
+        ></span
+      >
+      <span
+        >{labels.chars}: <span id="char-count" class="font-semibold">0</span> / 20,000</span
+      >
     </div>
-    
-    <button id="btn-generate" class="w-full py-3 px-6 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl font-semibold transition-colors disabled:opacity-50">
-      Generate Code
+
+    <button
+      id="btn-generate"
+      type="button"
+      class="w-full py-3.5 px-6 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl transition-all shadow-md hover:shadow-lg active:scale-[0.99] disabled:opacity-50 text-base flex items-center justify-center gap-2"
+    >
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+      </svg>
+      <span id="txt-generate">{labels.btnGenerate}</span>
     </button>
+
+    <!-- Divider (Matching Live Clipboard) -->
+    <div class="relative flex items-center justify-center my-6">
+      <div class="border-t border-slate-200 dark:border-slate-700 w-full"></div>
+      <span
+        class="bg-white dark:bg-slate-800 px-4 text-xs font-medium text-slate-500 uppercase tracking-wider absolute"
+      >
+        {labels.orRetrieve}
+      </span>
+    </div>
+
+    <!-- Direct Code Input Group (Visible directly, matching Live Clipboard) -->
+    <div class="max-w-md mx-auto">
+      <div class="flex flex-col sm:flex-row gap-3">
+        <input
+          type="text"
+          id="code-input"
+          maxlength="6"
+          placeholder={labels.codePlaceholder}
+          class="flex-1 text-center font-mono text-2xl tracking-[0.25em] p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white placeholder:tracking-normal placeholder:font-sans placeholder:text-sm focus:ring-2 focus:ring-amber-500 outline-none uppercase"
+        />
+        <button
+          id="btn-retrieve"
+          type="button"
+          class="py-3 px-6 bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white font-semibold rounded-xl transition-all active:scale-[0.99] disabled:opacity-50 text-sm whitespace-nowrap"
+        >
+          <span id="txt-retrieve">{labels.btnRetrieve}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Clipboard Promo Link -->
+    <a
+      id="btn-live-clipboard"
+      href={liveInfo.href}
+      class="mt-4 w-full py-3 px-6 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700/60 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 border border-slate-300 dark:border-slate-600 shadow-sm group active:scale-[0.99] text-sm md:text-base"
+    >
+      <span class="relative flex h-2.5 w-2.5">
+        <span
+          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
+        ></span>
+        <span
+          class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"
+        ></span>
+      </span>
+      <span>{liveInfo.label}</span>
+      <svg
+        class="w-4 h-4 ml-1 text-slate-500 dark:text-slate-400 group-hover:translate-x-1 transition-transform"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+      </svg>
+    </a>
   </div>
 
-  <div id="state-code" class="hidden-state text-center py-8">
-    <h2 class="text-xl font-semibold mb-2">Your Code</h2>
-    <p class="text-slate-600 dark:text-slate-400 mb-6">Enter this code on your other device to retrieve your text.</p>
-    
-    <div class="text-6xl md:text-8xl font-bold tracking-widest text-amber-600 dark:text-amber-400 mb-6 font-mono" id="display-code">
-      ------
+  <!-- STATE: CODE GENERATED (Matching Live Clipboard UI Layout with QR Code) -->
+  <div id="state-code" class="hidden-state space-y-5">
+    <!-- Top Transfer Bar (Identical style to Live Clipboard Active Session) -->
+    <div
+      class="p-4 rounded-2xl bg-slate-100/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700 space-y-3 shadow-sm"
+    >
+      <!-- Row 1: Session Info, QR Preview, Expiry Badge, Start Over -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <!-- Session Code Display & Scalable QR Thumbnail -->
+        <div class="flex items-center gap-3">
+          <!-- Small Scalable QR Thumbnail Button -->
+          <button
+            id="btn-open-code-qr"
+            type="button"
+            class="group relative bg-white p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:border-amber-500 dark:hover:border-amber-500 hover:shadow transition-all flex flex-col items-center justify-center shrink-0 cursor-pointer active:scale-95"
+            title={labels.scanQrCode}
+          >
+            <div
+              id="code-qr-thumb"
+              class="w-11 h-11 md:w-12 md:h-12 [&>svg]:w-full [&>svg]:h-full"
+            >
+            </div>
+            <span
+              class="text-[9px] font-bold text-slate-500 group-hover:text-amber-600 dark:group-hover:text-amber-400 leading-tight mt-0.5 tracking-tight"
+              >QR CODE</span
+            >
+          </button>
+
+          <div>
+            <span
+              class="text-[11px] uppercase font-bold text-slate-500 tracking-wider block"
+              >{labels.sessionCodeLabel}</span
+            >
+            <span
+              id="display-code"
+              class="font-mono text-2xl md:text-3xl font-black text-amber-600 dark:text-amber-400 tracking-widest leading-none"
+            >
+              ------
+            </span>
+          </div>
+        </div>
+
+        <!-- Expiry Badge & Start Over Button -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <div
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 dark:border-amber-800"
+          >
+            <svg
+              class="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>{labels.expiresIn}</span>
+          </div>
+
+          <button
+            id="btn-reset-from-code"
+            type="button"
+            class="text-xs bg-yellow-500 font-semibold text-black hover:text-slate-800 dark:text-black dark:hover:text-slate-200 px-2.5 py-1 rounded-lg transition-colors border border-transparent hover:border-slate-300 dark:hover:border-slate-600"
+            title={labels.startOver}
+          >
+            {labels.startOver}
+          </button>
+        </div>
+      </div>
+
+      <!-- Row 2: Action Buttons: Copy Link, Copy Code, Copy Text, View QR -->
+      <div
+        class="pt-2 border-t border-slate-200/80 dark:border-slate-800/80 flex flex-wrap items-center gap-2"
+      >
+        <button
+          id="btn-copy-code-link"
+          type="button"
+          class="py-1.5 px-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+          title={labels.copyLink}
+        >
+          <svg
+            class="w-3.5 h-3.5 text-amber-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+            ></path>
+          </svg>
+          <span id="txt-copy-code-link">{labels.copyLink}</span>
+        </button>
+
+        <button
+          id="btn-copy-code"
+          type="button"
+          class="py-1.5 px-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+          title={labels.copyCode}
+        >
+          <svg
+            class="w-3.5 h-3.5 text-amber-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+            ></path>
+          </svg>
+          <span id="txt-copy-code">{labels.copyCode}</span>
+        </button>
+
+        <button
+          id="btn-copy-text-from-code"
+          type="button"
+          class="py-1.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+          title={labels.copyText}
+        >
+          <svg
+            class="w-3.5 h-3.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            ></path>
+          </svg>
+          <span id="txt-copy-text-from-code">{labels.copyText}</span>
+        </button>
+
+        <button
+          id="btn-open-code-qr-btn"
+          type="button"
+          class="py-1.5 px-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-1.5 shadow-sm active:scale-95 transition-all ml-auto"
+          title={labels.scanQrCode}
+        >
+          <svg
+            class="w-3.5 h-3.5 text-slate-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+            ></path>
+          </svg>
+          <span>{labels.qrCode}</span>
+        </button>
+      </div>
     </div>
-    
-    <p class="text-sm text-amber-600 dark:text-amber-400 mb-8 font-medium">
-      <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-      Expires in 10 minutes (One-time retrieval)
-    </p>
-    
-    <div class="flex flex-col sm:flex-row justify-center gap-4">
-      <button id="btn-copy-code" class="py-3 px-6 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-xl font-semibold transition-colors">
-        Copy Code
-      </button>
-      <button id="btn-reset-from-code" class="py-3 px-6 bg-transparent border-2 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl font-semibold transition-colors">
-        Start Over
+
+    <!-- Instructions Tip Banner -->
+    <div
+      class="text-xs text-slate-600 dark:text-slate-400 bg-amber-50/70 dark:bg-amber-950/30 p-3 rounded-xl border border-amber-200/60 dark:border-amber-800/40 flex items-center gap-2"
+    >
+      <svg
+        class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <span>{labels.codeDesc}</span>
+    </div>
+  </div>
+
+  <!-- STATE: RESULT (TEXT RETRIEVED) -->
+  <div id="state-result" class="hidden-state space-y-4">
+    <div
+      class="flex items-center justify-between pb-1 border-b border-slate-100 dark:border-slate-700/60"
+    >
+      <h2
+        class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2"
+      >
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+        {labels.resultTitle}
+      </h2>
+      <div class="text-xs text-slate-500 dark:text-slate-400 flex gap-3">
+        <span
+          >{labels.words}: <span id="result-word-count" class="font-semibold"
+            >0</span
+          ></span
+        >
+        <span
+          >{labels.chars}: <span id="result-char-count" class="font-semibold"
+            >0</span
+          ></span
+        >
+      </div>
+    </div>
+
+    <div
+      id="display-text"
+      class="p-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white h-48 md:h-64 overflow-y-auto whitespace-pre-wrap font-sans text-sm md:text-base leading-relaxed select-all"
+    >
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+      <div class="flex items-center gap-2">
+        <button
+          id="btn-copy-text"
+          type="button"
+          class="py-2.5 px-6 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl font-bold text-sm shadow-md transition-all active:scale-95 flex items-center gap-1.5"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            ></path>
+          </svg>
+          <span id="txt-copy-result-text">{labels.copyText}</span>
+        </button>
+
+        <button
+          id="btn-copy-result-link"
+          type="button"
+          class="py-2.5 px-4 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-semibold text-sm shadow-sm transition-all active:scale-95 flex items-center gap-1.5"
+          title={labels.copyLink}
+        >
+          <svg
+            class="w-4 h-4 text-amber-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+            ></path>
+          </svg>
+          <span id="txt-copy-result-link">{labels.copyLink}</span>
+        </button>
+      </div>
+
+      <button
+        id="btn-reset-from-result"
+        type="button"
+        class="py-2.5 px-5 bg-transparent border border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-semibold text-sm transition-all"
+      >
+        {labels.transferAnother}
       </button>
     </div>
   </div>
 
-  <div id="state-receive" class="hidden-state text-center py-8">
-    <h2 class="text-xl font-semibold mb-2">Enter Code</h2>
-    <p class="text-slate-600 dark:text-slate-400 mb-8">Enter the 6-digit code shown on your other device.</p>
-    
-    <input type="text" id="code-input" maxlength="6" class="text-center text-4xl tracking-[0.5em] font-mono w-full max-w-xs mx-auto p-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-amber-500 outline-none mb-8" placeholder="------" />
-    
-    <div class="flex flex-col sm:flex-row justify-center gap-4">
-      <button id="btn-retrieve" class="py-3 px-8 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl font-semibold transition-colors disabled:opacity-50">
-        Get Text
+  <!-- QR ZOOM MODAL (Matches Live Clipboard Modal) -->
+  <div
+    id="code-qr-modal"
+    class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 hidden"
+  >
+    <div
+      class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-slate-200 dark:border-slate-700 text-center relative animate-in fade-in zoom-in-95 duration-200"
+    >
+      <button
+        id="btn-close-code-qr-modal"
+        type="button"
+        class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg"
+        aria-label={labels.close}
+      >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
       </button>
-      <button id="btn-cancel-receive" class="py-3 px-6 bg-transparent border-2 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl font-semibold transition-colors">
-        Cancel
-      </button>
-    </div>
-  </div>
 
-  <div id="state-result" class="hidden-state">
-    <h2 class="text-xl font-semibold mb-4 text-center">Text Ready to Copy</h2>
-    <div class="p-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 mb-6 h-48 md:h-64 overflow-y-auto whitespace-pre-wrap font-sans" id="display-text"></div>
-    
-    <div class="flex flex-col sm:flex-row justify-center gap-4">
-      <button id="btn-copy-text" class="py-3 px-8 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl font-semibold transition-colors">
-        Copy Text
-      </button>
-      <button id="btn-reset-from-result" class="py-3 px-6 bg-transparent border-2 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 rounded-xl font-semibold transition-colors">
-        Transfer Another
-      </button>
+      <div
+        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 text-xs font-bold uppercase tracking-wider mb-2"
+      >
+        QR Connect
+      </div>
+      <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">
+        {labels.qrModalTitle}
+      </h3>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+        {labels.qrModalSubtitle}
+      </p>
+
+      <!-- Scalable QR Code in clean white tile -->
+      <div
+        class="bg-white p-3 rounded-2xl shadow-inner border border-slate-200 inline-block mx-auto mb-4"
+      >
+        <div
+          id="code-qr-modal-code"
+          class="w-52 h-52 [&>svg]:w-full [&>svg]:h-full"
+        >
+        </div>
+      </div>
+
+      <!-- Share Link Preview -->
+      <div
+        class="bg-slate-100 dark:bg-slate-900/80 p-3 rounded-xl mb-4 border border-slate-200 dark:border-slate-700/60 text-left"
+      >
+        <div
+          class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-0.5"
+        >
+          Transfer Link
+        </div>
+        <div
+          id="code-qr-modal-link"
+          class="text-xs font-mono text-slate-700 dark:text-slate-300 truncate select-all"
+        >
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <button
+          id="btn-code-modal-copy-link"
+          type="button"
+          class="flex-1 py-2.5 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-xs transition-colors shadow-sm"
+        >
+          {labels.copyLink}
+        </button>
+        <button
+          id="btn-code-modal-close"
+          type="button"
+          class="py-2.5 px-4 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl text-xs transition-colors"
+        >
+          {labels.close}
+        </button>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
+  import QRCode from "qrcode";
+
+  const container = document.getElementById(
+    "standard-tool-container",
+  ) as HTMLDivElement;
+  const labels = JSON.parse(container?.dataset.labels || "{}");
+
   // DOM Elements
   const states = {
-    paste: document.getElementById('state-paste'),
-    code: document.getElementById('state-code'),
-    receive: document.getElementById('state-receive'),
-    result: document.getElementById('state-result')
-  };
-  
-  const els = {
-    textInput: document.getElementById('text-input') as HTMLTextAreaElement,
-    wordCount: document.getElementById('word-count'),
-    charCount: document.getElementById('char-count'),
-    btnGenerate: document.getElementById('btn-generate') as HTMLButtonElement,
-    btnShowReceive: document.getElementById('btn-show-receive'),
-    displayCode: document.getElementById('display-code'),
-    btnCopyCode: document.getElementById('btn-copy-code'),
-    btnResetCode: document.getElementById('btn-reset-from-code'),
-    codeInput: document.getElementById('code-input') as HTMLInputElement,
-    btnRetrieve: document.getElementById('btn-retrieve') as HTMLButtonElement,
-    btnCancelReceive: document.getElementById('btn-cancel-receive'),
-    displayText: document.getElementById('display-text'),
-    btnCopyText: document.getElementById('btn-copy-text'),
-    btnResetResult: document.getElementById('btn-reset-from-result'),
-    status: document.getElementById('status-message')
+    paste: document.getElementById("state-paste"),
+    code: document.getElementById("state-code"),
+    result: document.getElementById("state-result"),
   };
 
-  let currentCode = '';
-  let retrievedText = '';
+  const els = {
+    textInput: document.getElementById("text-input") as HTMLTextAreaElement,
+    wordCount: document.getElementById("word-count"),
+    charCount: document.getElementById("char-count"),
+    btnGenerate: document.getElementById("btn-generate") as HTMLButtonElement,
+    txtGenerate: document.getElementById("txt-generate"),
+
+    // Code input in paste state
+    codeInput: document.getElementById("code-input") as HTMLInputElement,
+    btnRetrieve: document.getElementById("btn-retrieve") as HTMLButtonElement,
+    txtRetrieve: document.getElementById("txt-retrieve"),
+
+    // State Code elements
+    displayCode: document.getElementById("display-code"),
+    btnCopyCode: document.getElementById("btn-copy-code") as HTMLButtonElement,
+    txtCopyCode: document.getElementById("txt-copy-code"),
+    btnCopyCodeLink: document.getElementById(
+      "btn-copy-code-link",
+    ) as HTMLButtonElement,
+    txtCopyCodeLink: document.getElementById("txt-copy-code-link"),
+    btnCopyTextFromCode: document.getElementById(
+      "btn-copy-text-from-code",
+    ) as HTMLButtonElement,
+    txtCopyTextFromCode: document.getElementById("txt-copy-text-from-code"),
+    btnResetCode: document.getElementById("btn-reset-from-code"),
+
+    // QR Code elements
+    btnOpenCodeQr: document.getElementById(
+      "btn-open-code-qr",
+    ) as HTMLButtonElement,
+    btnOpenCodeQrBtn: document.getElementById(
+      "btn-open-code-qr-btn",
+    ) as HTMLButtonElement,
+    codeQrThumb: document.getElementById("code-qr-thumb") as HTMLDivElement,
+    codeQrModal: document.getElementById("code-qr-modal") as HTMLDivElement,
+    codeQrModalCode: document.getElementById(
+      "code-qr-modal-code",
+    ) as HTMLDivElement,
+    codeQrModalLink: document.getElementById(
+      "code-qr-modal-link",
+    ) as HTMLDivElement,
+    btnCloseCodeQrModal: document.getElementById(
+      "btn-close-code-qr-modal",
+    ) as HTMLButtonElement,
+    btnCodeModalClose: document.getElementById(
+      "btn-code-modal-close",
+    ) as HTMLButtonElement,
+    btnCodeModalCopyLink: document.getElementById(
+      "btn-code-modal-copy-link",
+    ) as HTMLButtonElement,
+
+    // State Result elements
+    displayText: document.getElementById("display-text"),
+    resultWordCount: document.getElementById("result-word-count"),
+    resultCharCount: document.getElementById("result-char-count"),
+    btnCopyText: document.getElementById("btn-copy-text") as HTMLButtonElement,
+    txtCopyResultText: document.getElementById("txt-copy-result-text"),
+    btnCopyResultLink: document.getElementById(
+      "btn-copy-result-link",
+    ) as HTMLButtonElement,
+    txtCopyResultLink: document.getElementById("txt-copy-result-link"),
+    btnResetResult: document.getElementById("btn-reset-from-result"),
+
+    status: document.getElementById("status-message"),
+  };
+
+  let currentCode = "";
+  let currentPastedText = "";
+  let retrievedText = "";
 
   // Utility
-  const showState = (stateName: keyof typeof states) => {
-    Object.values(states).forEach(el => el?.classList.add('hidden-state'));
-    states[stateName]?.classList.remove('hidden-state');
-    els.status!.textContent = '';
+  const setStatus = (msg: string) => {
+    if (!els.status) return;
+    els.status.textContent = msg;
+
+    if (msg) {
+      els.status.classList.remove("hidden-state");
+      els.status.classList.add(
+        "bg-red-100",
+        "text-red-700",
+        "dark:bg-red-900/30",
+        "dark:text-red-400",
+      );
+    } else {
+      els.status.classList.add("hidden-state");
+      els.status.classList.remove(
+        "bg-red-100",
+        "text-red-700",
+        "dark:bg-red-900/30",
+        "dark:text-red-400",
+      );
+    }
   };
-  const setStatus = (msg: string) => { els.status!.textContent = msg; };
+
+  const showState = (stateName: keyof typeof states) => {
+    Object.values(states).forEach((el) => el?.classList.add("hidden-state"));
+    states[stateName]?.classList.remove("hidden-state");
+    setStatus("");
+  };
+
+  // QR Modal controls
+  const openQrModal = () => {
+    els.codeQrModal?.classList.remove("hidden");
+  };
+  const closeQrModal = () => {
+    els.codeQrModal?.classList.add("hidden");
+  };
+
+  els.btnOpenCodeQr?.addEventListener("click", openQrModal);
+  els.btnOpenCodeQrBtn?.addEventListener("click", openQrModal);
+  els.btnCloseCodeQrModal?.addEventListener("click", closeQrModal);
+  els.btnCodeModalClose?.addEventListener("click", closeQrModal);
+  els.codeQrModal?.addEventListener("click", (e) => {
+    if (e.target === els.codeQrModal) closeQrModal();
+  });
+  window.addEventListener("keydown", (e) => {
+    if (
+      e.key === "Escape" &&
+      els.codeQrModal &&
+      !els.codeQrModal.classList.contains("hidden")
+    ) {
+      closeQrModal();
+    }
+  });
+
+  els.btnCodeModalCopyLink?.addEventListener("click", () => {
+    if (!currentCode) return;
+    const link = `${window.location.origin}${window.location.pathname}?code=${currentCode}`;
+    navigator.clipboard.writeText(link).then(() => {
+      const orig = els.btnCodeModalCopyLink.textContent;
+      els.btnCodeModalCopyLink.textContent = labels.linkCopied || "Copied!";
+      setTimeout(() => {
+        els.btnCodeModalCopyLink.textContent = orig;
+      }, 2000);
+    });
+  });
 
   // Listeners: Paste State
-  els.textInput?.addEventListener('input', () => {
+  els.textInput?.addEventListener("input", () => {
     const text = els.textInput.value;
-    els.charCount!.textContent = text.length.toString();
-    els.wordCount!.textContent = (text.match(/\S+/g) || []).length.toString();
+    if (els.charCount) els.charCount.textContent = text.length.toString();
+    if (els.wordCount)
+      els.wordCount.textContent = (text.match(/\S+/g) || []).length.toString();
   });
 
-  els.btnShowReceive?.addEventListener('click', () => showState('receive'));
-
-  els.btnGenerate?.addEventListener('click', async () => {
+  // Generate Code Action
+  els.btnGenerate?.addEventListener("click", async () => {
     const content = els.textInput.value.trim();
-    if (!content) return setStatus('Please paste some text first.');
-    if (content.length > 20000) return setStatus('Text is too long (Max 20,000 chars).');
+    if (!content)
+      return setStatus(labels.errorEmpty || "Please paste some text first.");
+    if (content.length > 20000)
+      return setStatus(
+        labels.errorLength || "Text is too long (Max 20,000 chars).",
+      );
 
+    currentPastedText = content;
     els.btnGenerate.disabled = true;
-    els.btnGenerate.textContent = 'Generating...';
-    
+    if (els.txtGenerate)
+      els.txtGenerate.textContent = labels.btnGenerating || "Generating...";
+
     try {
-      const res = await fetch('/api/clipboard/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content })
+      const res = await fetch("/api/clipboard/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content }),
       });
-      const data = await res.json() as { code?: string; error?: string };
-      
-      if (res.ok) {
-        currentCode = data.code ?? '';
-        els.displayCode!.textContent = data.code ?? '';
-        showState('code');
-        els.textInput.value = '';
-        els.charCount!.textContent = '0';
-        els.wordCount!.textContent = '0';
+      const data = (await res.json()) as { code?: string; error?: string };
+
+      if (res.ok && data.code) {
+        currentCode = data.code;
+        const formattedCode = `${data.code.slice(0, 3)} ${data.code.slice(3, 6)}`;
+        if (els.displayCode) els.displayCode.textContent = formattedCode;
+
+        // Generate SVG QR code of share link
+        const shareLink = `${window.location.origin}${window.location.pathname}?code=${currentCode}`;
+        QRCode.toString(shareLink, {
+          type: "svg",
+          margin: 1,
+          color: { dark: "#0f172a", light: "#ffffff" },
+        })
+          .then((svg) => {
+            if (els.codeQrThumb) els.codeQrThumb.innerHTML = svg;
+            if (els.codeQrModalCode) els.codeQrModalCode.innerHTML = svg;
+          })
+          .catch(console.error);
+
+        if (els.codeQrModalLink) {
+          els.codeQrModalLink.textContent = shareLink;
+        }
+
+        // Update URL query param without reload
+        const url = new URL(window.location.href);
+        url.searchParams.set("code", currentCode);
+        window.history.replaceState({}, "", url.toString());
+
+        showState("code");
+        els.textInput.value = "";
+        if (els.charCount) els.charCount.textContent = "0";
+        if (els.wordCount) els.wordCount.textContent = "0";
       } else {
-        setStatus(data.error || 'Something went wrong.');
+        setStatus(data.error || labels.errorGeneric || "Something went wrong.");
       }
-    } catch (err) {
-      setStatus('Network error. Please try again.');
+    } catch {
+      setStatus(labels.errorGeneric || "Network error. Please try again.");
     } finally {
       els.btnGenerate.disabled = false;
-      els.btnGenerate.textContent = 'Generate Code';
+      if (els.txtGenerate)
+        els.txtGenerate.textContent = labels.btnGenerate || "Generate Code";
     }
   });
 
-  // Listeners: Code State
-  els.btnCopyCode?.addEventListener('click', () => {
-    navigator.clipboard.writeText(currentCode).then(() => {
-      const orig = els.btnCopyCode!.textContent;
-      els.btnCopyCode!.textContent = 'Copied!';
-      setTimeout(() => els.btnCopyCode!.textContent = orig, 2000);
-    }).catch(() => setStatus('Failed to copy.'));
+  // Code State Actions
+  els.btnCopyCode?.addEventListener("click", () => {
+    if (!currentCode) return;
+    navigator.clipboard
+      .writeText(currentCode)
+      .then(() => {
+        const orig = els.txtCopyCode?.textContent || labels.copyCode;
+        if (els.txtCopyCode)
+          els.txtCopyCode.textContent = labels.codeCopied || "Copied!";
+        setTimeout(() => {
+          if (els.txtCopyCode) els.txtCopyCode.textContent = orig;
+        }, 2000);
+      })
+      .catch(() => setStatus("Failed to copy."));
   });
-  els.btnResetCode?.addEventListener('click', () => showState('paste'));
 
-  // Listeners: Receive State
-  els.btnCancelReceive?.addEventListener('click', () => showState('paste'));
-  
-  els.btnRetrieve?.addEventListener('click', async () => {
-    const code = els.codeInput.value.trim();
-    if (!/^\d{6}$/.test(code)) return setStatus('Please enter a valid 6-digit code.');
+  els.btnCopyCodeLink?.addEventListener("click", () => {
+    if (!currentCode) return;
+    const link = `${window.location.origin}${window.location.pathname}?code=${currentCode}`;
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+        const orig = els.txtCopyCodeLink?.textContent || labels.copyLink;
+        if (els.txtCopyCodeLink)
+          els.txtCopyCodeLink.textContent = labels.linkCopied || "Link Copied!";
+        setTimeout(() => {
+          if (els.txtCopyCodeLink) els.txtCopyCodeLink.textContent = orig;
+        }, 2000);
+      })
+      .catch(() => setStatus("Failed to copy link."));
+  });
 
+  els.btnCopyTextFromCode?.addEventListener("click", () => {
+    if (!currentPastedText) return;
+    navigator.clipboard
+      .writeText(currentPastedText)
+      .then(() => {
+        const orig = els.txtCopyTextFromCode?.textContent || labels.copyText;
+        if (els.txtCopyTextFromCode)
+          els.txtCopyTextFromCode.textContent = labels.textCopied || "Copied!";
+        setTimeout(() => {
+          if (els.txtCopyTextFromCode)
+            els.txtCopyTextFromCode.textContent = orig;
+        }, 2000);
+      })
+      .catch(() => setStatus("Failed to copy text."));
+  });
+
+  const resetToPaste = () => {
+    currentCode = "";
+    currentPastedText = "";
+    retrievedText = "";
+    if (els.codeQrThumb) els.codeQrThumb.innerHTML = "";
+    if (els.codeQrModalCode) els.codeQrModalCode.innerHTML = "";
+    if (els.codeQrModal) els.codeQrModal.classList.add("hidden");
+    if (els.codeInput) els.codeInput.value = "";
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete("code");
+    window.history.replaceState({}, "", url.toString());
+
+    showState("paste");
+  };
+
+  els.btnResetCode?.addEventListener("click", resetToPaste);
+  els.btnResetResult?.addEventListener("click", resetToPaste);
+
+  // Retrieve Action
+  const performRetrieve = async (codeToRetrieve: string) => {
+    const clean = codeToRetrieve.trim().replace(/[-\s]/g, "");
+    if (!/^\d{6}$/.test(clean)) {
+      return setStatus(
+        labels.errorInvalidCode || "Please enter a valid 6-digit code.",
+      );
+    }
+
+    currentCode = clean;
     els.btnRetrieve.disabled = true;
-    els.btnRetrieve.textContent = 'Retrieving...';
+    if (els.txtRetrieve)
+      els.txtRetrieve.textContent = labels.btnRetrieving || "Retrieving...";
 
     try {
-      const res = await fetch('/api/clipboard/retrieve', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code })
+      const res = await fetch("/api/clipboard/retrieve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: clean }),
       });
-      const data = await res.json() as { content?: string; error?: string };
+      const data = (await res.json()) as { content?: string; error?: string };
 
-      if (res.ok) {
-        retrievedText = data.content ?? '';
-        els.displayText!.textContent = retrievedText;
-        showState('result');
-        els.codeInput.value = '';
+      if (res.ok && typeof data.content === "string") {
+        retrievedText = data.content;
+        if (els.displayText) els.displayText.textContent = retrievedText;
+        if (els.resultCharCount)
+          els.resultCharCount.textContent = retrievedText.length.toString();
+        if (els.resultWordCount)
+          els.resultWordCount.textContent = (
+            retrievedText.match(/\S+/g) || []
+          ).length.toString();
+
+        showState("result");
+        if (els.codeInput) els.codeInput.value = "";
+
+        // Maintain URL param
+        const url = new URL(window.location.href);
+        url.searchParams.set("code", clean);
+        window.history.replaceState({}, "", url.toString());
       } else {
-        setStatus(data.error || 'Something went wrong.');
+        setStatus(data.error || labels.errorGeneric || "Something went wrong.");
       }
-    } catch (err) {
-      setStatus('Network error. Please try again.');
+    } catch {
+      setStatus(labels.errorGeneric || "Network error. Please try again.");
     } finally {
       els.btnRetrieve.disabled = false;
-      els.btnRetrieve.textContent = 'Get Text';
+      if (els.txtRetrieve)
+        els.txtRetrieve.textContent = labels.btnRetrieve || "Get Text";
+    }
+  };
+
+  els.btnRetrieve?.addEventListener("click", () =>
+    performRetrieve(els.codeInput.value),
+  );
+  els.codeInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      performRetrieve(els.codeInput.value);
     }
   });
 
-  // Listeners: Result State
-  els.btnCopyText?.addEventListener('click', () => {
-    navigator.clipboard.writeText(retrievedText).then(() => {
-      const orig = els.btnCopyText!.textContent;
-      els.btnCopyText!.textContent = 'Copied!';
-      setTimeout(() => els.btnCopyText!.textContent = orig, 2000);
-    }).catch(() => setStatus('Failed to copy text.'));
+  // Listeners: Result State Actions
+  els.btnCopyText?.addEventListener("click", () => {
+    if (!retrievedText) return;
+    navigator.clipboard
+      .writeText(retrievedText)
+      .then(() => {
+        const orig = els.txtCopyResultText?.textContent || labels.copyText;
+        if (els.txtCopyResultText)
+          els.txtCopyResultText.textContent = labels.textCopied || "Copied!";
+        setTimeout(() => {
+          if (els.txtCopyResultText) els.txtCopyResultText.textContent = orig;
+        }, 2000);
+      })
+      .catch(() => setStatus("Failed to copy text."));
   });
-  els.btnResetResult?.addEventListener('click', () => showState('paste'));
+
+  els.btnCopyResultLink?.addEventListener("click", () => {
+    if (!currentCode) return;
+    const link = `${window.location.origin}${window.location.pathname}?code=${currentCode}`;
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+        const orig = els.txtCopyResultLink?.textContent || labels.copyLink;
+        if (els.txtCopyResultLink)
+          els.txtCopyResultLink.textContent =
+            labels.linkCopied || "Link Copied!";
+        setTimeout(() => {
+          if (els.txtCopyResultLink) els.txtCopyResultLink.textContent = orig;
+        }, 2000);
+      })
+      .catch(() => setStatus("Failed to copy link."));
+  });
+
+  // Auto-retrieve if ?code= is present in URL params on page load
+  const initialCode = new URLSearchParams(window.location.search).get("code");
+  if (initialCode && /^\d{6}$/.test(initialCode.trim().replace(/[-\s]/g, ""))) {
+    if (els.codeInput) els.codeInput.value = initialCode.trim();
+    performRetrieve(initialCode);
+  }
 </script>

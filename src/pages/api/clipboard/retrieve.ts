@@ -9,7 +9,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Invalid 6-digit code.' }), { status: 400 });
     }
 
-    // Fetch and validate expiration in one go
+
     const { data, error } = await supabaseAdmin
       .from('clipboard_items')
       .select('*')
@@ -24,8 +24,6 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: 'Code has expired.' }), { status: 410 });
     }
 
-    // Optional One-Time Retrieval: Delete immediately after reading
-    await supabaseAdmin.from('clipboard_items').delete().eq('id', data.id);
 
     return new Response(JSON.stringify({ success: true, content: data.content }), {
       status: 200,

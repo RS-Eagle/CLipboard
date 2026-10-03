@@ -1,13 +1,19 @@
 ---
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '' } = Astro.props;
+
 const languages = [
-  ['en', 'English', '/'],
-  ['es', 'Español', '/es/'],
-  ['ja', '日本語', '/ja/'],
-  ['fr', 'Français', '/fr/'],
-  ['de', 'Deutsch', '/de/'],
-  ['pt', 'Português', '/pt/'],
-  ['ko', '한국어', '/ko/'],
-  ['it', 'Italiano', '/it/']
+  ['en', 'English', currentPath ? `/${currentPath}` : '/'],
+  ['es', 'Español', currentPath ? `/es/${currentPath}` : '/es/'],
+  ['ja', '日本語', currentPath ? `/ja/${currentPath}` : '/ja/'],
+  ['fr', 'Français', currentPath ? `/fr/${currentPath}` : '/fr/'],
+  ['de', 'Deutsch', currentPath ? `/de/${currentPath}` : '/de/'],
+  ['pt', 'Português', currentPath ? `/pt/${currentPath}` : '/pt/'],
+  ['ko', '한국어', currentPath ? `/ko/${currentPath}` : '/ko/'],
+  ['it', 'Italiano', currentPath ? `/it/${currentPath}` : '/it/']
 ];
 ---
 

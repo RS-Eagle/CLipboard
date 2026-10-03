@@ -4,13 +4,19 @@ interface Props {
   title: string;
   description: string;
   lang?: string;
+  pagePath?: string;
 }
-const { title, description, lang = 'en' } = Astro.props;
+const { title, description, lang = 'en', pagePath = '' } = Astro.props;
 const siteUrl = (import.meta.env.PUBLIC_SITE_URL || 'https://onlinecopypaste.com').replace(/\/$/, '');
 const canonicalUrl = `${siteUrl}${Astro.url.pathname === '/' ? '/' : Astro.url.pathname}`;
 const ogImageUrl = `${siteUrl}/og-image.svg`;
 const languages = ['en', 'es', 'ja', 'fr', 'de', 'pt', 'ko', 'it'];
-const languageUrl = (locale: string) => locale === 'en' ? `${siteUrl}/` : `${siteUrl}/${locale}/`;
+const languageUrl = (locale: string) => {
+  if (pagePath) {
+    return locale === 'en' ? `${siteUrl}/${pagePath}` : `${siteUrl}/${locale}/${pagePath}`;
+  }
+  return locale === 'en' ? `${siteUrl}/` : `${siteUrl}/${locale}/`;
+};
 ---
 
 <!doctype html>
@@ -39,6 +45,7 @@ const languageUrl = (locale: string) => locale === 'en' ? `${siteUrl}/` : `${sit
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:site_name" content="Online Copy Paste" />
+    <meta name="google-adsense-account" content="ca-pub-6363100072688340">
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />

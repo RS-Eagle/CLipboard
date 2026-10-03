@@ -1,12 +1,11 @@
 import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
-
-import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   output: 'server',
   site: 'https://onlinecopypaste.com',
+
   i18n: {
     locales: ['en', 'es', 'ja', 'fr', 'de', 'pt', 'ko', 'it'],
     defaultLocale: 'en',
@@ -15,11 +14,13 @@ export default defineConfig({
     }
   },
 
-  adapter: cloudflare({ imageService: 'passthrough' }),
+  adapter: cloudflare({
+    imageService: 'passthrough'
+  }),
+
   session: false,
 
   integrations: [
-    tailwind({ applyBaseStyles: false }),
     sitemap({
       customPages: [
         'https://onlinecopypaste.com/es/',
@@ -31,7 +32,15 @@ export default defineConfig({
         'https://onlinecopypaste.com/it/',
         'https://onlinecopypaste.com/privacy',
         'https://onlinecopypaste.com/terms',
-        'https://onlinecopypaste.com/contact'
+        'https://onlinecopypaste.com/contact',
+        'https://onlinecopypaste.com/live',
+        'https://onlinecopypaste.com/es/live',
+        'https://onlinecopypaste.com/ja/live',
+        'https://onlinecopypaste.com/fr/live',
+        'https://onlinecopypaste.com/de/live',
+        'https://onlinecopypaste.com/pt/live',
+        'https://onlinecopypaste.com/ko/live',
+        'https://onlinecopypaste.com/it/live'
       ]
     })
   ]
